@@ -1,7 +1,9 @@
 # Data center network transport protocol design
 
-kai2.pem:
-http://starryho.duckdns.org/kai2.pem
+Extracted from https://bitbucket.org/prachetaa/cs244_dctcp_win13 by Prachetaa Raghavan
+
+Extra files to download:
+kai2.pem: http://starryho.duckdns.org/kai2.pem
 
 Server connection:
 ssh -i "kai2.pem" ubuntu@ec2-54-191-67-33.us-west-2.compute.amazonaws.com
