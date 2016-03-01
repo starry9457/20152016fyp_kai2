@@ -21,7 +21,8 @@ for qsize in 200; do
 	dir1=dctcpbb-h$hosts
 	rm -rf $dir1
 	mkdir $dir1
-	for k in 5 10 15 20 40; do
+	#for k in 5 10 15 20 40; do
+	for k in 10 20 30 35 40; do
 	    dctcp_red_min=`expr $k \\* $dctcp_red_avpkt`
 	    dctcp_red_max=`expr $dctcp_red_min + 1`
 	    python dctcp.py --delay $delay -b $bwnet -B $bwnet -k $k -d $dir1 --maxq $qsize -t $time \
