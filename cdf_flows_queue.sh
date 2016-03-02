@@ -36,5 +36,5 @@ for qsize in 200; do
     done
     python plot_cdf.py -f dctcpbb-h3/q.txt dctcpbb-h21/q.txt tcpbb-h3/q.txt \
     tcpbb-h21/q.txt -l dctcp2flows dctcp20flows tcp2flows tcp20flows -o $dirf/cdf_flows.png
-    #rm -rf dctcpbb-h3 dctcpbb-h21 tcpbb-h21 tcpbb-h3
+    #rm -rf dctcpbb-h3 dctcpbb-h21 tcpbb-h21 tcpbb-h3		# keep the files remained for analysis 
 done
