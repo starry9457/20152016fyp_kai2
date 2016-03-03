@@ -18,15 +18,25 @@ echo "------------------------------------------------------------------------"
 echo "Do you want us to shut down once the runs are over ? Enter 1 for yes, 0
 for no :"
 read shutdown
+echo "------------------------------------------------------------------------"
 echo "Executing the script dctcp_tcp_comparison.sh"
+echo "------------------------------------------------------------------------"
 ./dctcp_tcp_comparison.sh
+echo "------------------------------------------------------------------------"
 echo "Executing the script k_sweep.sh"
+echo "------------------------------------------------------------------------"
 ./k_sweep.sh
+echo "------------------------------------------------------------------------"
 echo "Executing the script cdf_flows_queue.sh"
+echo "------------------------------------------------------------------------"
 ./cdf_flows_queue.sh
+echo "------------------------------------------------------------------------"
 echo "Executing the script n_and_k_sweep.sh"
+echo "------------------------------------------------------------------------"
 ./n_and_k_sweep.sh
+echo "------------------------------------------------------------------------"
 echo "Sending the attachment to $email"
+echo "------------------------------------------------------------------------"
 cd dctcpgraphs-q200/
 echo "Please find the attachment, thank you for your patience" | \
 mutt -s "PA3 graphs" -a dctcp_tcp_queue.png k_sweep.png cdf_flows.png \

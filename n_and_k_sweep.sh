@@ -39,4 +39,4 @@ for qsize in 200; do
 done
 python plot_k_sweep.py -f dctcpbb-h3/k.txt dctcpbb-h5/k.txt dctcpbb-h7/k.txt \
 dctcpbb-h9/k.txt dctcpbb-h10/k.txt -l 3hosts 5hosts 7hosts 9hosts 10hosts -o $dirf/n_and_k_sweep.png
-rm -rf dctcpbb-h*
+#rm -rf dctcpbb-h*		# keep the files remained for analysis

@@ -20,8 +20,7 @@ for qsize in 200; do
     rm -rf dctcpbb-q$qsize
     mkdir dctcpbb-q$qsize
     dir1=dctcpbb-q$qsize
-    #for k in 3 5 9 15 20 30 40 60 80 100; do
-    for k in 3 5 10 20 30 35 40; do
+    for k in 3 5 9 15 20 30 40 60 80 100; do
         dctcp_red_min=`expr $k \\* $dctcp_red_avpkt`
         dctcp_red_max=`expr $dctcp_red_min + 1`
         python dctcp.py --delay $delay -b $bwnet -B $bwnet -k $k -d $dir1 --maxq $qsize -t $time \
@@ -38,4 +37,4 @@ for qsize in 200; do
 done
 
 python plot_k_sweep.py -f $dir1/k.txt -l Ksweep -o $dirf/k_sweep.png
-#rm -rf $dir1
+#rm -rf $dir1       # Keep the files remained for analysis
