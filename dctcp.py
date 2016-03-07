@@ -332,6 +332,9 @@ def dctcp():
 		myfile.write("\n")
 		myfile.close()
 
+    net.getNodeByName('h3').popen('/bin/ping 10.0.0.1 > %s/ping.txt' % args.dir, shell=True)
+
+
     stop_tcpprobe()
     qmon.terminate()
     net.stop()
