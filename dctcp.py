@@ -117,7 +117,7 @@ parser.add_argument('--dir', '-d',
                     required=True)
 
 parser.add_argument('--hosts', '-n',
-                    help="Duration (sec) to run the experiment",
+                    help="Number of nodes in star.  Must be >= 3",
                     type=int,
                     default=3)
 
@@ -332,7 +332,11 @@ def dctcp():
 		myfile.write("\n")
 		myfile.close()
 
-    net.getNodeByName('h3').popen('/bin/ping 10.0.0.1 > %s/ping.txt' % args.dir, shell=True)
+    if args.tcpdump:
+        for i in xrange(args.n):
+            node_name = 'h%d' % (i+1)
+            net.getNodeByName(node_name).popen('/bin/ping 10.0.0.1 > %s/ping.txt' % args.dir, shell=True)
+            #net.getNodeByName('h3').popen('/bin/ping 10.0.0.1 > %s/ping.txt' % args.dir, shell=True)
 
 
     stop_tcpprobe()
