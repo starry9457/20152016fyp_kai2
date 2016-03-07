@@ -334,7 +334,7 @@ def dctcp():
 
     #if args.tcpdump:
     for i in xrange(args.hosts):
-        node_name = 'h%d' % (i+1)
+        node_name = 'h%d' % (i)
         net.getNodeByName(node_name).popen('/bin/ping 10.0.0.1 > %s/ping.txt' % args.dir, shell=True)
         #net.getNodeByName('h3').popen('/bin/ping 10.0.0.1 > %s/ping.txt' % args.dir, shell=True)
 
