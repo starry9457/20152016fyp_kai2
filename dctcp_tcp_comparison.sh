@@ -36,7 +36,7 @@ for qsize in 200; do
     dir2=tcpbb-q$qsize
     python dctcp.py --delay $delay -b 100 -d $dir2 --maxq $qsize -t $time \
     --dctcp 0 --red 0 --iperf $iperf -k 0 -n 3
-    #python plot_tcpprobe.py -f $dir1/cwnd.txt $dir2/cwnd.txt -o $dirf/cwnd-iperf.png -p $iperf_port
+    python plot_tcpprobe.py -f $dir1/cwnd.txt $dir2/cwnd.txt -o $dirf/cwnd-iperf.png -p $iperf_port
     python plot_queue.py -f $dir1/q.txt $dir2/q.txt --legend dctcp tcp -o \
     $dirf/dctcp_tcp_queue.png
     #rm -rf $dir1 $dir2     # keep the files remained for analysis
