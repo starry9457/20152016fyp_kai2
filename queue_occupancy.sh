@@ -38,11 +38,9 @@ for qsize in $qsizes; do
         --dctcp 1 \
     --red 0\
         --iperf $iperf -n 3
-    done
 
-    for k in $ks; do
-        dir2=dctcpbb-q$qsize-k$k
-        python plot_queue.py -f $dir2/q.txt -o ＄dirf/dctcp_queue_k$k.png
+
+        python plot_queue.py -f $dir1/q.txt -o ＄dirf/dctcp_queue_k$k.png
     done
 done
 
