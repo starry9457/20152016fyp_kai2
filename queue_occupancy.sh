@@ -40,7 +40,7 @@ for qsize in $qsizes; do
         --iperf $iperf -n 3
 
 
-        python plot_queue.py -f $dir1/q.txt -o ＄dirf/dctcp_queue_k$k.png
+        python plot_queue.py -f $dir1/q.txt -o $dirf/dctcp_queue_k$k.png
     done
 done
 
