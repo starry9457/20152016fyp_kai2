@@ -20,9 +20,9 @@ for qsize in $qsizes; do
     mkdir dctcpgraphs-q$qsize
     dirf=dctcpgraphs-q$qsize
     rm -rf dctcpbb-q$qsize
-    mkdir dctcpbb-q$qsize
-    dir1=dctcpbb-q$qsize
     for k in $ks; do
+        mkdir dctcpbb-q$qsize-k$k
+        dir1=dctcpbb-q$qsize-k$k
         echo "------------------------------------------------------------------------"
         echo "queue_occupancy.sh: Testing with k: $k, Queue Size: $qsize"
         echo "------------------------------------------------------------------------"
