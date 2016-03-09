@@ -39,17 +39,20 @@ for qsize in 200; do
         --red 0 \
         --iperf $iperf -k $k -n 3
         #dir2=tcpbb-q$qsize
+    done
     #python dctcp.py --delay $delay -b 100 -d $dir2 --maxq $qsize -t $time --dctcp 0 --red 0 --iperf $iperf -k 0 -n 3
     cwnd_pathlist=""
     q_pathlist=""
     for k in $ks; do
         cwnd_pathlist=cwnd_pathlist + "dctcpbb-q" + $qsize + "-k" + $k + "/cwnd.txt" + " "
         q_pathlist=cwnd_pathlist + "dctcpbb-q" + $qsize + "-k" + $k + "/q.txt" + " "
+    done
     python plot_tcpprobe.py -f cwnd_pathlist -o $dirf/cwnd-iperf.png -p $iperf_port
     python plot_queue.py -f q_pathlist -o $dirf/dctcp_queue.png      # is it compined to look?
     for k in $ks; do
         dir2=dctcpbb-q$qsize-k$k
         python plot_queue.py -f dir2/q.txt -o dirf/dctcp_queue_k$k.png
+    done
 
     #rm -rf $dir1 $dir2     # keep the files remained for analysis
     #python plot_ping.py -f $dir/ping.txt -o $dir/rtt.png
