@@ -14,7 +14,7 @@ dctcp_red_burst=100
 dctcp_red_prob=1
 iperf_port=5001
 iperf=~/iperf-patched/src/iperf
-ks="1 2 3 5 8 15 20 30 40 60 80 100"
+ks="3 5"
 qsizes=200
 n=3     # hosts
 for qsize in $qsizes; do
@@ -24,6 +24,7 @@ for qsize in $qsizes; do
     for k in $ks; do
         mkdir dctcpbb-q$qsize-k$k
         dir1=dctcpbb-q$qsize-k$k
+        echo ""
         echo "------------------------------------------------------------------------"
         echo "kai2_expt.sh: Testing with k: $k, Queue Size: $qsize"
         echo "------------------------------------------------------------------------"
@@ -40,6 +41,7 @@ for qsize in $qsizes; do
     --red 0\
         --iperf $iperf -n $n
 
+        echo ""
         echo "------------------------------------------------------------------------"
         echo "kai2_expt.sh: Generating graph of Queue Occupancy vs "
         echo "Marking Threshold (K) "
@@ -47,6 +49,7 @@ for qsize in $qsizes; do
         echo "------------------------------------------------------------------------"
         python plot_queue.py -f $dir1/q.txt -o $dirf/dctcp_queue_k$k.png
 
+        echo ""
         echo "------------------------------------------------------------------------"
         echo "kai2_expt.sh: Combining the data of Marking Threshold (K), which will"
         echo "be used to generate the graph Throughput vs Marking Threshold (K) later"
@@ -54,12 +57,13 @@ for qsize in $qsizes; do
         echo "------------------------------------------------------------------------"
         cat $dir1/k.txt >> $dirf/k.txt
 
+        echo ""
         echo "------------------------------------------------------------------------"
         echo "kai2_expt.sh: Combining the average ping data of Marking Threshold (K)"
         echo "with k: $k"
         echo "------------------------------------------------------------------------"
-        echo "kai2_expt.sh: Combining with k : $k, h: $i"
         for ((i=0; i<$n; i++)); do
+            echo "kai2_expt.sh: Combining with k: $k, h: $i"
             echo $k, |tr "\n" " " >> $dirf/k$k_ping.txt
             cat $dir1/k$k_h$i_ping_avg.txt >> $dirf/k$k_ping.txt
         done
@@ -69,6 +73,7 @@ for qsize in $qsizes; do
     done
 done
 
+echo ""
 echo "------------------------------------------------------------------------"
 echo "kai2_expt.sh: Generating graph of Throughput vs Marking Threshold (K) "
 echo "------------------------------------------------------------------------"
