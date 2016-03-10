@@ -14,7 +14,7 @@ dctcp_red_burst=100
 dctcp_red_prob=1
 iperf_port=5001
 iperf=~/iperf-patched/src/iperf
-ks="3 5 9 15 20 30 40 60 80 100"
+ks="1 2 3 5 8 15 20 30 40 60 80 100"
 qsizes=200
 for qsize in $qsizes; do
     mkdir dctcpgraphs-q$qsize
@@ -24,7 +24,7 @@ for qsize in $qsizes; do
         mkdir dctcpbb-q$qsize-k$k
         dir1=dctcpbb-q$qsize-k$k
         echo "------------------------------------------------------------------------"
-        echo "queue_occupancy.sh: Testing with k: $k, Queue Size: $qsize"
+        echo "kai2_expt.sh: Testing with k: $k, Queue Size: $qsize"
         echo "------------------------------------------------------------------------"
         dctcp_red_min=`expr $k \\* $dctcp_red_avpkt`
         dctcp_red_max=`expr $dctcp_red_min + 1`
@@ -39,11 +39,23 @@ for qsize in $qsizes; do
     --red 0\
         --iperf $iperf -n 3
 
-
+        echo "------------------------------------------------------------------------"
+        echo "kai2_expt.sh: Generating graph of Queue Occupancy vs "
+        echo "Marking Threshold (K) "
+        echo "with k: $k, Queue Size: $qsize"
+        echo "------------------------------------------------------------------------"
         python plot_queue.py -f $dir1/q.txt -o $dirf/dctcp_queue_k$k.png
+
+        cat $dir1/k.txt >> $dirf/k.txt
+
+        # cwnd graph, not used.
+        #python plot_tcpprobe.py -f $dir1/cwnd.txt $dir2/cwnd.txt -o $dirf/cwnd-iperf.png -p $iperf_port
     done
 done
 
-python plot_k_sweep.py -f $dir1/k.txt -l Ksweep -o $dirf/k_sweep.png
+echo "------------------------------------------------------------------------"
+echo "kai2_expt.sh: Generating graph of Throughput vs Marking Threshold (K) "
+echo "------------------------------------------------------------------------"
+python plot_k_sweep.py -f $dirf/k.txt -l Ksweep -o $dirf/k_sweep.png
 
 #rm -rf $dir1       # Keep the files remained for analysis
