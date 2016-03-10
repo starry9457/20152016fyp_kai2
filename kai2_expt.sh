@@ -16,6 +16,7 @@ iperf_port=5001
 iperf=~/iperf-patched/src/iperf
 ks="1 2 3 5 8 15 20 30 40 60 80 100"
 qsizes=200
+n=3     # hosts
 for qsize in $qsizes; do
     mkdir dctcpgraphs-q$qsize
     dirf=dctcpgraphs-q$qsize
@@ -37,7 +38,7 @@ for qsize in $qsizes; do
         --red_prob $dctcp_red_prob \
         --dctcp 1 \
     --red 0\
-        --iperf $iperf -n 3
+        --iperf $iperf -n $n
 
         echo "------------------------------------------------------------------------"
         echo "kai2_expt.sh: Generating graph of Queue Occupancy vs "
@@ -46,7 +47,21 @@ for qsize in $qsizes; do
         echo "------------------------------------------------------------------------"
         python plot_queue.py -f $dir1/q.txt -o $dirf/dctcp_queue_k$k.png
 
+        echo "------------------------------------------------------------------------"
+        echo "kai2_expt.sh: Combining the data of Marking Threshold (K), which will"
+        echo "be used to generate the graph Throughput vs Marking Threshold (K) later"
+        echo "with k: $k"
+        echo "------------------------------------------------------------------------"
         cat $dir1/k.txt >> $dirf/k.txt
+
+        echo "------------------------------------------------------------------------"
+        echo "kai2_expt.sh: Combining the average ping data of Marking Threshold (K)"
+        echo "with k: $k"
+        echo "------------------------------------------------------------------------"
+        for ((i=0; i<=$n; i++)); do
+            echo $k, |tr "\n" " " >> $dirf/k$k_ping.txt
+            cat $dir1/k$k_h$i_ping_avg.txt >> $dirf/k$k_ping.txt
+        done
 
         # cwnd graph, not used.
         #python plot_tcpprobe.py -f $dir1/cwnd.txt $dir2/cwnd.txt -o $dirf/cwnd-iperf.png -p $iperf_port
