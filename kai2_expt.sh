@@ -3,7 +3,7 @@
 # Note: Mininet must be run as root.  So invoke this shell script
 # using sudo.
 
-time=30
+time=60
 bwnet=100
 delay=1
 
@@ -14,7 +14,7 @@ dctcp_red_burst=100
 dctcp_red_prob=1
 iperf_port=5001
 iperf=~/iperf-patched/src/iperf
-ks="3 5"
+ks="1 2 3 5 8 15 20 30 40 60 80 100"
 qsizes=200
 n=3     # hosts
 for qsize in $qsizes; do
@@ -57,16 +57,16 @@ for qsize in $qsizes; do
         echo "------------------------------------------------------------------------"
         cat $dir1/k.txt >> $dirf/k.txt
 
-        echo ""
-        echo "------------------------------------------------------------------------"
-        echo "kai2_expt.sh: Combining the average ping data of Marking Threshold (K)"
-        echo "with k: $k"
-        echo "------------------------------------------------------------------------"
-        for ((i=0; i<$n; i++)); do
-            echo "kai2_expt.sh: Combining with k: $k, h: $i"
-            echo $k, |tr "\n" " " >> $dirf/k$k_ping.txt
-            cat $dir1/k$k_h$i_ping_avg.txt >> $dirf/k$k_ping.txt
-        done
+#        echo ""
+#        echo "------------------------------------------------------------------------"
+#        echo "kai2_expt.sh: Combining the average ping data of Marking Threshold (K)"
+#        echo "with k: $k"
+#        echo "------------------------------------------------------------------------"
+#        for ((i=0; i<$n; i++)); do
+#            echo "kai2_expt.sh: Combining with k: $k, h: $i"
+#            echo $k, |tr "\n" " " >> $dirf/k$k_ping.txt
+#            cat $dir1/k$k_h$i_ping_avg.txt >> $dirf/k$k_ping.txt
+#        done
 
         # cwnd graph, not used.
         #python plot_tcpprobe.py -f $dir1/cwnd.txt $dir2/cwnd.txt -o $dirf/cwnd-iperf.png -p $iperf_port
