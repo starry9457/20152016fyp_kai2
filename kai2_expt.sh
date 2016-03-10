@@ -58,7 +58,8 @@ for qsize in $qsizes; do
         echo "kai2_expt.sh: Combining the average ping data of Marking Threshold (K)"
         echo "with k: $k"
         echo "------------------------------------------------------------------------"
-        for ((i=0; i<=$n; i++)); do
+        echo "kai2_expt.sh: Combining with k : $k, h: $i"
+        for ((i=0; i<$n; i++)); do
             echo $k, |tr "\n" " " >> $dirf/k$k_ping.txt
             cat $dir1/k$k_h$i_ping_avg.txt >> $dirf/k$k_ping.txt
         done
