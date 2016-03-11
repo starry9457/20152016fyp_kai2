@@ -215,6 +215,11 @@ def ResetDCTCPState():
    Popen("sysctl -w net.ipv4.tcp_dctcp_enable=0", shell=True).wait()
    Popen("sysctl -w net.ipv4.tcp_ecn=0", shell=True).wait()
 
+# Enable ECN, disable DCTCP in the Linux Kernel
+def SetTCPECNState():
+   Popen("sysctl -w net.ipv4.tcp_dctcp_enable=0", shell=True).wait()
+   Popen("sysctl -w net.ipv4.tcp_ecn=1", shell=True).wait()
+
 # Monitor the queue occupancy 
 def start_qmon(iface, interval_sec=0.5, outfile="q.txt"):
     monitor = Process(target=monitor_qlen,
@@ -259,9 +264,12 @@ def dctcp():
     if not os.path.exists(args.dir):
         os.makedirs(args.dir)
     os.system("sudo sysctl -w net.ipv4.tcp_congestion_control=%s" % args.cong)
-    if (args.dctcp):
+    if (args.dctcp) == 1:
         SetDCTCPState()
 	edctcp=1
+    else if (args.dctcp) == 2:
+        SetTCPECNState()
+    edctcp=0
     else:
         ResetDCTCPState()
 	edctcp=0
