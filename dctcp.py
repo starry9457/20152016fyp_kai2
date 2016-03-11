@@ -267,7 +267,7 @@ def dctcp():
     if (args.dctcp) == 1:
         SetDCTCPState()
 	edctcp=1
-    else if (args.dctcp) == 2:
+    elif (args.dctcp) == 2:
         SetTCPECNState()
     edctcp=0
     else:
