@@ -266,13 +266,13 @@ def dctcp():
     os.system("sudo sysctl -w net.ipv4.tcp_congestion_control=%s" % args.cong)
     if (args.dctcp) == 1:
         SetDCTCPState()
-		edctcp=1
+	edctcp=1
     elif (args.dctcp) == 2:
         SetTCPECNState()
-		edctcp=0
+	edctcp=0
     else:
         ResetDCTCPState()
-		edctcp=0
+	edctcp=0
 
     # Set the red parameters passed to this code, otherwise use the default
     # settings that are set in Mininet code.
