@@ -35,6 +35,12 @@ for qsize in $qsizes; do
 #        dctcp_red_min=`expr $k \\* $dctcp_red_avpkt`
 #        dctcp_red_max=`expr $dctcp_red_min + 1`
         python dctcp.py --delay $delay -b $bwnet -B $bwnet -k $k -d $dir1 --maxq $qsize -t $time \
+        --red_limit $dctcp_red_limit \
+        --red_min $dctcp_red_min \
+        --red_max $dctcp_red_max \
+        --red_avpkt $dctcp_red_avpkt \
+        --red_burst $dctcp_red_burst \
+        --red_prob $dctcp_red_prob \
         --dctcp 2 \
         --red 0\
         --iperf $iperf -n $n
@@ -54,17 +60,6 @@ for qsize in $qsizes; do
         echo "with k: $k"
         echo "------------------------------------------------------------------------"
         cat $dir1/k.txt >> $dirf/k.txt
-
-#        echo ""
-#        echo "------------------------------------------------------------------------"
-#        echo "kai2_expt_tcpecn.sh: Combining the average ping data of Marking Threshold (K)"
-#        echo "with k: $k"
-#        echo "------------------------------------------------------------------------"
-#        for ((i=0; i<$n; i++)); do
-#            echo "kai2_expt_tcpecn.sh: Combining with k: $k, h: $i"
-#            echo $k, |tr "\n" " " >> $dirf/k$k_ping.txt
-#            cat $dir1/k$k_h$i_ping_avg.txt >> $dirf/k$k_ping.txt
-#        done
 
         # cwnd graph, not used.
         #python plot_tcpprobe.py -f $dir1/cwnd.txt $dir2/cwnd.txt -o $dirf/cwnd-iperf.png -p $iperf_port
