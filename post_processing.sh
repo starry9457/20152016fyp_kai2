@@ -10,16 +10,16 @@ ks="1 2 3 5 8 15 20 30 40 60 80 100"
 n=3
 iperf_port=5001
 
-dctcpf=dctcpgraph-q$qsize
-tcpecnf=tcpecngraph-q$qsize
+dctcpf=dctcpgraphs-q$qsize
+tcpecnf=tcpecngraphs-q$qsize
 
 echo ""
 echo "------------------------------------------------------------------------"
 echo "Processing data to get average ping in different tests, result will be"
 echo "put inside $dctcpf and $tcpecnf"
 echo "------------------------------------------------------------------------"
-./tcpecn_pingavg.sh >> $tcpecnf/ping-avg.txt
-./dctcp_pingavg.sh >> $dctcpf/ping-avg.txt
+./tcpecn_pingavg.sh | tee $tcpecnf/ping-avg.txt
+./dctcp_pingavg.sh | tee $dctcpf/ping-avg.txt
 
 echo ""
 echo "------------------------------------------------------------------------"
