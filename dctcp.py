@@ -333,7 +333,7 @@ def dctcp():
 	rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
 	rates = rates[CALIBRATION_SKIP:]
 	reference_rate = median(rates)
-	if (reference_rate > 20):
+	if (reference_rate > 0):							# Starry: Original is 20, but why?
 	    with open(args.dir+"/k.txt", "a") as myfile:
 		myfile.write(str(args.mark_threshold)+",")
 		myfile.write(str(reference_rate))
@@ -343,8 +343,8 @@ def dctcp():
     #if args.tcpdump:
     for i in xrange(args.hosts):
         node_name = 'h%d' % (i)
-        #net.getNodeByName(node_name).popen("/bin/ping 10.0.0.1 -c 1000 -i 0.1| /usr/bin/awk -F '/' 'END {print $5}' >> %s/k%d_%s_ping_avg.txt" % (args.dir, args.mark_threshold, node_name), shell=True)
         net.getNodeByName(node_name).popen("/bin/ping 10.0.0.1 -c 1000 -i 0.1 >> %s/k%d_%s_ping.txt" % (args.dir, args.mark_threshold, node_name), shell=True)
+        #net.getNodeByName(node_name).popen("/bin/ping 10.0.0.1 -c 1000 -i 0.1| /usr/bin/awk -F '/' 'END {print $5}' >> %s/k%d_%s_ping_avg.txt" % (args.dir, args.mark_threshold, node_name), shell=True)
         #net.getNodeByName(node_name).popen("/usr/bin/awk -F '/' 'END {print $5}' %s/k%d_%s_ping.txt >> %s/k%d_%s_ping_avg.txt" % (args.dir, args.mark_threshold, node_name, args.dir, args.mark_threshold, node_name), shell=True)
         #net.getNodeByName('h3').popen('/bin/ping 10.0.0.1 > %s/ping.txt' % args.dir, shell=True)
 
