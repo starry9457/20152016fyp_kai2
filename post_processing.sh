@@ -18,8 +18,8 @@ echo "------------------------------------------------------------------------"
 echo "Processing data to get average ping in different tests, result will be"
 echo "put inside $dctcpf and $tcpecnf"
 echo "------------------------------------------------------------------------"
-./tcpecn_pingavg.sh > $tcpecnf/ping-avg.txt
-./dctcp_pingavg.sh > $dctcpf/ping-avg.txt
+./tcpecn_pingavg.sh >> $tcpecnf/ping-avg.txt
+./dctcp_pingavg.sh >> $dctcpf/ping-avg.txt
 
 echo ""
 echo "------------------------------------------------------------------------"
@@ -27,5 +27,7 @@ echo "Generating the graph of cwnd size comparison between DCTCP and TCP/ECN"
 echo "------------------------------------------------------------------------"
 for k in $ks; do
     # cwnd graph. Actually not used in this experiment.
+	dir1=dctcpbb-q$qsize-k$k
+	dir2=tcpecnbb-q$qsize-k$k
     python plot_tcpprobe.py -f $dir1/cwnd.txt $dir2/cwnd.txt -o $dctcpf/cwnd-iperf-k$k.png -p $iperf_port
 done
