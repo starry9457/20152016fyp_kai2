@@ -42,8 +42,8 @@ for qsize in $qsizes; do
         --red_burst $dctcp_red_burst \
         --red_prob $dctcp_red_prob \
         --dctcp 1\
-        --red 0\
-		--ping 200\
+        --red 1\
+		--ping 100\
 		--interval 0.5\
 		--ecn 1\
         --iperf $iperf -n $n

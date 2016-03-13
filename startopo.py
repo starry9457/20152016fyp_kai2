@@ -30,7 +30,7 @@ class StarTopo(Topo):
         self.delay = delay
         self.maxq = maxq
         self.enable_dctcp = enable_dctcp
-		self.enable_ecn = enable_ecn
+        self.enable_ecn = enable_ecn
         self.enable_red = enable_red
         self.red_params = red_params
         self.show_mininet_commands = show_mininet_commands;

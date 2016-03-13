@@ -43,7 +43,7 @@ for qsize in $qsizes; do
         --red_prob $dctcp_red_prob \
         --dctcp 0\
         --red 0\
-		--ping 200\
+		--ping 100\
 		--interval 0.5\
 		--ecn 1\
         --iperf $iperf -n $n

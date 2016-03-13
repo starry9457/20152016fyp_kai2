@@ -130,17 +130,17 @@ parser.add_argument('--maxq',
                     type=int,
                     help="Max buffer size of network interface in packets",
                     default=100)
-					
+
 parser.add_argument('--ping',
-		    help="Number of ping packets",
-		    type=int,
-		    default="10")
-			
+            help="Number of ping packets",
+            type=int,
+            default="10")
+
 parser.add_argument('--interval',
-		    help="ping intervals",
-		    type=float,
-		    default="1.0")
-			
+            help="ping intervals",
+            type=float,
+            default="1.0")
+
 # RED Parameters 
 parser.add_argument('--mark_threshold', '-k',
 		    help="Marking threshold",
@@ -295,8 +295,8 @@ def dctcp():
     if (args.ecn) == 1:
         SetECNState1()
         eecn=1
-	elif (args.ecn) == 2:
-	    SetECNState2()
+    elif (args.ecn) == 2:
+        SetECNState2()
         eecn=2
     else:
         ResetECNState()
