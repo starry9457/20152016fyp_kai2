@@ -60,20 +60,6 @@ for qsize in $qsizes; do
         echo "with k: $k"
         echo "------------------------------------------------------------------------"
         cat $dir1/k.txt >> $dirf/k.txt
-
-#        echo ""
-#        echo "------------------------------------------------------------------------"
-#        echo "kai2_expt_dctcp.sh: Combining the average ping data of Marking Threshold (K)"
-#        echo "with k: $k"
-#        echo "------------------------------------------------------------------------"
-#        for ((i=0; i<$n; i++)); do
-#            echo "kai2_expt_dctcp.sh: Combining with k: $k, h: $i"
-#            echo $k, |tr "\n" " " >> $dirf/k$k_ping.txt
-#            cat $dir1/k$k_h$i_ping_avg.txt >> $dirf/k$k_ping.txt
-#        done
-
-        # cwnd graph, not used.
-        #python plot_tcpprobe.py -f $dir1/cwnd.txt $dir2/cwnd.txt -o $dirf/cwnd-iperf.png -p $iperf_port
     done
 done
 
