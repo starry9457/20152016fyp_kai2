@@ -175,6 +175,11 @@ parser.add_argument('--dctcp',
 		    help="Enable DCTCP",
 		    type=int,
 		    default="0")
+			
+parser.add_argument('--ecn',
+		    help="TCP/ECN Mode",
+		    type=int,
+		    default="0")
 
 parser.add_argument('--red',
 		    help="Enable RED",
@@ -225,10 +230,17 @@ def ResetDCTCPState():
    Popen("sysctl -w net.ipv4.tcp_dctcp_enable=0", shell=True).wait()
    Popen("sysctl -w net.ipv4.tcp_ecn=0", shell=True).wait()
 
-# Enable ECN, disable DCTCP in the Linux Kernel
-def SetTCPECNState():
-   Popen("sysctl -w net.ipv4.tcp_dctcp_enable=0", shell=True).wait()
+# Enable ECN in State 1, disable DCTCP in the Linux Kernel
+def SetECNState1():
    Popen("sysctl -w net.ipv4.tcp_ecn=1", shell=True).wait()
+  
+# Enable ECN in State 2, disable DCTCP in the Linux Kernel
+def SetECNState2():
+   Popen("sysctl -w net.ipv4.tcp_ecn=2", shell=True).wait()
+   
+# Disable ECN in the Linux Kernel
+def ResetECNState():
+   Popen("sysctl -w net.ipv4.tcp_ecn=0", shell=True).wait()
 
 # Monitor the queue occupancy 
 def start_qmon(iface, interval_sec=0.5, outfile="q.txt"):
@@ -276,13 +288,19 @@ def dctcp():
     os.system("sudo sysctl -w net.ipv4.tcp_congestion_control=%s" % args.cong)
     if (args.dctcp) == 1:
         SetDCTCPState()
-	edctcp=1
-    elif (args.dctcp) == 2:
-        SetTCPECNState()
-	edctcp=0
+        edctcp=1
     else:
         ResetDCTCPState()
-	edctcp=0
+        edctcp=0
+    if (args.ecn) == 1:
+        SetECNState1()
+        eecn=1
+	elif (args.ecn) == 2:
+	    SetECNState2()
+        eecn=2
+    else:
+        ResetECNState()
+        eecn=0
 
     # Set the red parameters passed to this code, otherwise use the default
     # settings that are set in Mininet code.
@@ -299,6 +317,7 @@ def dctcp():
 		    bw_net=args.bw_net,
 		    maxq=args.maxq,
 		    enable_dctcp=edctcp,
+			enable_ecn=eecn,
 		    enable_red=args.red,
 		    red_params=red_settings,
 		    show_mininet_commands=0)
@@ -355,7 +374,7 @@ def dctcp():
         net.getNodeByName(node_name).popen("/bin/ping 10.0.0.1 -c %d -i %f >> %s/k%d-%s-ping.txt" % (args.ping, args.interval, args.dir, args.mark_threshold, node_name), shell=True)
 
     #sleep_time = args.ping * args.interval * args.hosts
-    sleep_time = args.ping * args.interval		# Why out of the for-loop but still affected?
+    sleep_time = args.ping * args.interval
     sleep(sleep_time)
 	
     stop_tcpprobe()

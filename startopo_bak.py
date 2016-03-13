@@ -19,7 +19,7 @@ class StarTopo(Topo):
     "Star topology for DCTCP experiment"
 
     def __init__(self, n=3, cpu=None, bw_host=None, bw_net=None,
-                 delay=None, maxq=None, enable_dctcp=None, enable_ecn=None, enable_red=None,
+                 delay=None, maxq=None, enable_dctcp=None, enable_red=None,
                  show_mininet_commands=False, red_params=None):
         # Add default members to class.
         super(StarTopo, self ).__init__()
@@ -30,7 +30,6 @@ class StarTopo(Topo):
         self.delay = delay
         self.maxq = maxq
         self.enable_dctcp = enable_dctcp
-		self.enable_ecn = enable_ecn
         self.enable_red = enable_red
         self.red_params = red_params
         self.show_mininet_commands = show_mininet_commands;
@@ -47,10 +46,7 @@ class StarTopo(Topo):
         # Host and link configuration
         hconfig = {'cpu': self.cpu}
 
-        #if self.enable_dctcp: 
-	    #cprint("Enabling ECN for senders/receiver",'green')
-		
-        if self.enable_ecn: 
+        if self.enable_dctcp: 
 	    cprint("Enabling ECN for senders/receiver",'green')
         
 	# Set configurations for the topology and then add hosts etc.
@@ -62,7 +58,7 @@ class StarTopo(Topo):
                             'show_commands': self.show_mininet_commands}                            
         lconfig_switch = {'bw': self.bw_net, 'delay': 0,
                             'max_queue_size': self.maxq,
-                            'enable_ecn': self.enable_ecn,
+                            'enable_ecn': 1 if self.enable_dctcp else 0,
                             'enable_red': 1 if self.enable_red else 0,
                             'red_params': self.red_params if ( (self.enable_red or self.enable_dctcp) 
 						and self.red_params != None) else None,

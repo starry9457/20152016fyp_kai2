@@ -41,10 +41,11 @@ for qsize in $qsizes; do
         --red_avpkt $dctcp_red_avpkt \
         --red_burst $dctcp_red_burst \
         --red_prob $dctcp_red_prob \
-        --dctcp 2 \
+        --dctcp 0\
         --red 0\
-		--ping 1000\
+		--ping 200\
 		--interval 0.5\
+		--ecn 1\
         --iperf $iperf -n $n
 
         echo ""
