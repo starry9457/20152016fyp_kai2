@@ -7,7 +7,7 @@ echo "------------------------------------------------------------------------"
 echo "DCTCP Experiment"
 echo "------------------------------------------------------------------------"
 
-time=60
+time=30
 bwnet=100
 delay=1
 
@@ -43,6 +43,8 @@ for qsize in $qsizes; do
         --red_prob $dctcp_red_prob \
         --dctcp 1 \
         --red 0\
+		--ping 1000\
+		--interval 0.5\
         --iperf $iperf -n $n
 
         echo ""

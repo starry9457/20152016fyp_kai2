@@ -130,7 +130,17 @@ parser.add_argument('--maxq',
                     type=int,
                     help="Max buffer size of network interface in packets",
                     default=100)
-
+					
+parser.add_argument('--ping',
+		    help="Number of ping packets",
+		    type=int,
+		    default="10")
+			
+parser.add_argument('--interval',
+		    help="ping intervals",
+		    type=float,
+		    default="1.0")
+			
 # RED Parameters 
 parser.add_argument('--mark_threshold', '-k',
 		    help="Marking threshold",
@@ -325,7 +335,7 @@ def dctcp():
         delta = now - start_time
         if delta > args.time:
             break
-        #print "%.1fs left..." % (args.time - delta)
+        print "%.1fs left..." % (args.time - delta)
 
     # If the experiment involves marking bandwidth for different threshold
     # then get the rate of the bottlenect link
@@ -342,8 +352,11 @@ def dctcp():
 
     for i in xrange(args.hosts):
         node_name = 'h%d' % (i)
-        net.getNodeByName(node_name).popen("/bin/ping 10.0.0.1 -c 1000 -i 1 >> %s/k%d-%s-ping.txt" % (args.dir, args.mark_threshold, node_name), shell=True)
+        net.getNodeByName(node_name).popen("/bin/ping 10.0.0.1 -c %d -i %f >> %s/k%d-%s-ping.txt" % (args.ping, args.interval, args.dir, args.mark_threshold, node_name), shell=True)
 
+	sleep_time=args.ping * args.interval * args.hosts
+	sleep(sleep_time)
+	
     stop_tcpprobe()
     qmon.terminate()
     net.stop()
