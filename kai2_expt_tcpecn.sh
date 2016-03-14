@@ -18,7 +18,7 @@ dctcp_red_burst=100
 dctcp_red_prob=1
 iperf_port=5001
 iperf=~/iperf-patched/src/iperf
-ks="1 2 3 5 8 15 20 30 40 60 80 100"
+ks="3 5 8 15 20 30 40 60 80 100"
 qsizes=200
 n=3     # Number of hosts
 for qsize in $qsizes; do
@@ -42,10 +42,10 @@ for qsize in $qsizes; do
         --red_burst $dctcp_red_burst \
         --red_prob $dctcp_red_prob \
         --dctcp 0\
-        --red 0\
-		--ping 100\
-		--interval 0.5\
-		--ecn 1\
+        --red 1\
+        --ping 100\
+        --interval 0.3\
+        --ecn 1\
         --iperf $iperf -n $n
 
         echo ""
