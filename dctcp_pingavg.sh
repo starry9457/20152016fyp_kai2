@@ -10,7 +10,7 @@ iperf_port=5001
 for ((i=0; i<$n; i++)); do
     echo "Host: $i"
     for ((j=0; j<4; j++)); do
-    	echo "TOS: %j"
+    	echo "TOS: $j"
         for k in $ks; do
         	dir1=dctcpbb-q$qsize-k$k
             dctcp_src=$dir1/k$k-h$i-tos$j-ping.txt
