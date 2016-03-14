@@ -39,5 +39,5 @@ for k in $ks; do
     # cwnd graph. Actually not used in this experiment.
     dir1=dctcpbb-q$qsize-k$k
     dir2=tcpecnbb-q$qsize-k$k
-    python plot_queue.py -f $dir1/q.txt $dir2/q.txt --legend dctcp tcpecn -o $dirf/dctcp-tcpecn-queue-k$k.png
+    python plot_queue.py -f $dir1/q.txt $dir2/q.txt --legend dctcp tcpecn -o $dctcpf/dctcp-tcpecn-queue-k$k.png
 done
