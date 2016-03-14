@@ -41,3 +41,10 @@ for k in $ks; do
     dir2=tcpecnbb-q$qsize-k$k
     python plot_queue.py -f $dir1/q.txt $dir2/q.txt --legend dctcp tcpecn -o $dctcpf/dctcp-tcpecn-queue-k$k.png
 done
+
+echo ""
+echo "------------------------------------------------------------------------"
+echo "Generating graph of Throughput vs Marking Threshold (K) comparison"
+echo "between DCTCP and TCP/ECN"
+echo "------------------------------------------------------------------------"
+python plot_k_sweep.py -f $dctcpf/k.txt $tcpecnf/k.txt -l dctcp tcpecn -o $dctcpf/k_sweep_comparison.png

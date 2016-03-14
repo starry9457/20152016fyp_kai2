@@ -371,7 +371,8 @@ def dctcp():
 
     for i in xrange(args.hosts):
         node_name = 'h%d' % (i)
-        net.getNodeByName(node_name).popen("/bin/ping 10.0.0.1 -c %d -i %f >> %s/k%d-%s-ping.txt" % (args.ping, args.interval, args.dir, args.mark_threshold, node_name), shell=True)
+        for j = xrange(4):
+            net.getNodeByName(node_name).popen("/bin/ping 10.0.0.1 -Q %d -c %d -i %f >> %s/k%d-%s-tos%d-ping.txt" % (j, args.ping, args.interval, args.dir, args.mark_threshold, node_name, j), shell=True)            
 
     sleep_time = args.ping * args.interval
     sleep(sleep_time)
