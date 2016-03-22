@@ -369,6 +369,9 @@ def dctcp():
 		myfile.write("\n")
 		myfile.close()
 
+    # Wait for some while before the ping test.
+    sleep(5)
+    # ping test
     for i in xrange(args.hosts):
         node_name = 'h%d' % (i)
         for j in xrange(4):

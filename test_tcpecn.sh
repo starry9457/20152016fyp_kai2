@@ -7,7 +7,7 @@ echo "------------------------------------------------------------------------"
 echo "TCP/ECN Experiment"
 echo "------------------------------------------------------------------------"
 
-time=15
+time=30
 bwnet=100
 delay=1
 
@@ -18,7 +18,7 @@ dctcp_red_burst=100
 dctcp_red_prob=1
 iperf_port=5001
 iperf=~/iperf-patched/src/iperf
-ks="15"
+ks="3"
 qsizes=200
 n=3     # Number of hosts
 for qsize in $qsizes; do
@@ -30,7 +30,7 @@ for qsize in $qsizes; do
         dir1=tcpecnbb-q$qsize-k$k
         echo ""
         echo "------------------------------------------------------------------------"
-        echo "kai2_expt_tcpecn.sh: Testing with k: $k, Queue Size: $qsize"
+        echo "test_tcpecn.sh: Testing with k: $k, Queue Size: $qsize"
         echo "------------------------------------------------------------------------"
         dctcp_red_min=`expr $k \\* $dctcp_red_avpkt`
         dctcp_red_max=`expr $dctcp_red_min + 1`
@@ -42,15 +42,15 @@ for qsize in $qsizes; do
         --red_burst $dctcp_red_burst \
         --red_prob $dctcp_red_prob \
         --dctcp 0\
-        --red 0\
-        --ping 50\
-        --interval 0.5\
+        --red 1\
+        --ping 100\
+        --interval 0.3\
         --ecn 1\
         --iperf $iperf -n $n
 
         echo ""
         echo "------------------------------------------------------------------------"
-        echo "kai2_expt_tcpecn.sh: Generating graph of Queue Occupancy vs "
+        echo "test_tcpecn.sh: Generating graph of Queue Occupancy vs "
         echo "Marking Threshold (K) "
         echo "with k: $k, Queue Size: $qsize"
         echo "------------------------------------------------------------------------"
@@ -58,7 +58,7 @@ for qsize in $qsizes; do
 
         echo ""
         echo "------------------------------------------------------------------------"
-        echo "kai2_expt_tcpecn.sh: Combining the data of Marking Threshold (K), which will"
+        echo "test_tcpecn.sh: Combining the data of Marking Threshold (K), which will"
         echo "be used to generate the graph Throughput vs Marking Threshold (K) later"
         echo "with k: $k"
         echo "------------------------------------------------------------------------"
@@ -68,7 +68,7 @@ done
 
 echo ""
 echo "------------------------------------------------------------------------"
-echo "kai2_expt_tcpecn.sh: Generating graph of Throughput vs Marking Threshold (K) "
+echo "test_tcpecn.sh: Generating graph of Throughput vs Marking Threshold (K) "
 echo "------------------------------------------------------------------------"
 python plot_k_sweep.py -f $dirf/k.txt -l Ksweep -o $dirf/k_sweep.png
 
