@@ -22,12 +22,12 @@ ks="20"
 qsizes=200
 n=4     # Number of hosts
 for qsize in $qsizes; do
-    mkdir tcpecngraphs-q$qsize
-    dirf=tcpecngraphs-q$qsize
-    rm -rf tcpecnbb-q$qsize
+    mkdir dctcpgraphs-q$qsize
+    dirf=dctcpgraphs-q$qsize
+    rm -rf dctcpbb-q$qsize
     for k in $ks; do
-        mkdir tcpecnbb-q$qsize-k$k
-        dir1=tcpecnbb-q$qsize-k$k
+        mkdir dctcpbb-q$qsize-k$k
+        dir1=dctcpbb-q$qsize-k$k
         echo ""
         echo "------------------------------------------------------------------------"
         echo "test_dctcp.sh: Testing with k: $k, Queue Size: $qsize"
@@ -54,7 +54,7 @@ for qsize in $qsizes; do
         echo "Marking Threshold (K) "
         echo "with k: $k, Queue Size: $qsize"
         echo "------------------------------------------------------------------------"
-        python plot_queue.py -f $dir1/q.txt -o $dirf/tcpecn_queue_k$k.png
+        python plot_queue.py -f $dir1/q.txt -o $dirf/dctcp_queue_k$k.png
 
         echo ""
         echo "------------------------------------------------------------------------"

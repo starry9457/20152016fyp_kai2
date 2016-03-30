@@ -254,8 +254,8 @@ def start_receiver(net):
     #h0 = net.getNodeByName('h0')
     #print "Starting iperf server..."
     #server = h0.popen("%s -s -w 16m" % CUSTOM_IPERF_PATH)
-    h1 = net.getNodeByName('h1')
-    print "Starting iperf server at h1..."
+    h1 = net.getNodeByName('h0')
+    print "Starting iperf server at h0..."
     server = h1.popen("%s -s -w 16m" % CUSTOM_IPERF_PATH)
 
 # Start senders sending traffic to receiver h0
@@ -383,7 +383,7 @@ def dctcp():
     # Wait for some while before the ping test.
     sleep(5)
     # ping test
-    net.getNodeByName('h4').popen("/bin/ping 10.0.0.2 -Q 2 -c %d -i %f >> %s/k%d-h4-ping.txt" % (args.ping, args.interval, args.dir, args.mark_threshold), shell=True)
+    net.getNodeByName('h1').popen("/bin/ping 10.0.0.1 -Q 2 -c %d -i %f >> %s/k%d-h4-ping.txt" % (args.ping, args.interval, args.dir, args.mark_threshold), shell=True)
     #for i in xrange(args.hosts):
     #    node_name = 'h%d' % (i)
     #    for j in xrange(4):
