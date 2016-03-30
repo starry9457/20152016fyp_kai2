@@ -18,7 +18,7 @@ dctcp_red_burst=100
 dctcp_red_prob=1
 iperf_port=5001
 iperf=~/iperf-patched/src/iperf
-ks="3"
+ks="20"
 qsizes=200
 n=4     # Number of hosts
 for qsize in $qsizes; do
