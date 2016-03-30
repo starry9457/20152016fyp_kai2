@@ -265,7 +265,7 @@ def start_senders(net):
     #    print "Starting iperf client..."
     #    hn = net.getNodeByName('h%d' %(i+1))
     #    client = hn.popen("%s -c " % CUSTOM_IPERF_PATH + h0.IP() + " -t 1000")
-    #h0 = net.getNodeByName('h0')
+    h0 = net.getNodeByName('h0')
     h1 = net.getNodeByName('h1')
     print "Starting iperf client at h2"
     h2 = net.getNodeByName('h2')
