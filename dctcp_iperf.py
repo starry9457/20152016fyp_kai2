@@ -269,10 +269,10 @@ def start_senders(net):
     h1 = net.getNodeByName('h1')
     print "Starting iperf client at h2"
     h2 = net.getNodeByName('h2')
-    client2 = h2.open(%s -c * % CUSTOM_IPERF_PATH + h0.IP() + " -t 10000")
+    client2 = h2.open("%s -c " % CUSTOM_IPERF_PATH + h0.IP() + " -t 10000")
     print "Starting iperf client at h3"
     h3 = net.getNodeByName('h3')
-    client2 = h3.open(%s -c * % CUSTOM_IPERF_PATH + h0.IP() + " -t 10000")
+    client2 = h3.open("%s -c " % CUSTOM_IPERF_PATH + h0.IP() + " -t 10000")
 
 # Function to compute the median
 def median(l):
