@@ -4,7 +4,7 @@
 # using sudo.
 
 echo "------------------------------------------------------------------------"
-echo "TCP/ECN Test Experiment"
+echo "DCTCP Test Experiment for Queue Buildup"
 echo "------------------------------------------------------------------------"
 
 time=30
@@ -18,26 +18,26 @@ dctcp_red_burst=100
 dctcp_red_prob=1
 iperf_port=5001
 iperf=~/iperf-patched/src/iperf
-ks="20"
+ks="3 5 8 15 20 30 40 60 80 100"
 qsizes=200
 
 # Reproducing Queue buildup
 qbport=50001
 qbsize=20
 qbc=1000
-qbout=tcpecn-qb-qbs$qbsize-c$qbc.txt
+qbout=dctcp-qb-qbs$qbsize-c$qbc.txt
 
 n=4     # Number of hosts
 for qsize in $qsizes; do
-    mkdir tcpecngraphs-q$qsize
-    dirf=tcpecngraphs-q$qsize
-    rm -rf tcpecnbb-q$qsize
+    mkdir qb-dctcpgraphs-q$qsize
+    dirf=qb-dctcpgraphs-q$qsize
+    rm -rf qb-dctcpbb-q$qsize
     for k in $ks; do
-        mkdir tcpecnbb-q$qsize-k$k
-        dir1=tcpecnbb-q$qsize-k$k
+        mkdir qb-dctcpbb-q$qsize-k$k
+        dir1=qb-dctcpbb-q$qsize-k$k
         echo ""
         echo "------------------------------------------------------------------------"
-        echo "test_tcpecn.sh: Testing with k: $k, Queue Size: $qsize"
+        echo "kai2_expt_dctcp_qb.sh: Testing with k: $k, Queue Size: $qsize"
         echo "------------------------------------------------------------------------"
         dctcp_red_min=`expr $k \\* $dctcp_red_avpkt`
         dctcp_red_max=`expr $dctcp_red_min + 1`
@@ -48,7 +48,7 @@ for qsize in $qsizes; do
         --red_avpkt $dctcp_red_avpkt \
         --red_burst $dctcp_red_burst \
         --red_prob $dctcp_red_prob \
-        --dctcp 0 \
+        --dctcp 1 \
         --red 1 \
         --ping 100 \
         --interval 0.3 \
@@ -62,15 +62,15 @@ for qsize in $qsizes; do
 
         echo ""
         echo "------------------------------------------------------------------------"
-        echo "test_tcpecn.sh: Generating graph of Queue Occupancy vs "
+        echo "kai2_expt_dctcp_qb.sh: Generating graph of Queue Occupancy vs "
         echo "Marking Threshold (K) "
         echo "with k: $k, Queue Size: $qsize"
         echo "------------------------------------------------------------------------"
-        python plot_queue.py -f $dir1/q.txt -o $dirf/tcpecn_queue_k$k.png
+        python plot_queue.py -f $dir1/q.txt -o $dirf/dctcp_queue_k$k.png
 
         echo ""
         echo "------------------------------------------------------------------------"
-        echo "test_tcpecn.sh: Combining the data of Marking Threshold (K), which will"
+        echo "kai2_expt_dctcp_qb.sh: Combining the data of Marking Threshold (K), which will"
         echo "be used to generate the graph Throughput vs Marking Threshold (K) later"
         echo "with k: $k"
         echo "------------------------------------------------------------------------"
@@ -80,8 +80,8 @@ done
 
 echo ""
 echo "------------------------------------------------------------------------"
-echo "test_tcpecn.sh: Generating graph of Throughput vs Marking Threshold (K) "
+echo "kai2_expt_dctcp_qb.sh: Generating graph of Throughput vs Marking Threshold (K) "
 echo "------------------------------------------------------------------------"
-python plot_k_sweep.py -f $dirf/k.txt -l Ksweep -o $dirf/k_sweep.png
+python plot_k_sweep_qb.py -f $dirf/k.txt -l Ksweep -o $dirf/k_sweep.png
 
 #rm -rf $dir1       # Keep the files remained for analysis
