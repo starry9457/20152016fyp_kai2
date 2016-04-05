@@ -419,7 +419,8 @@ def dctcp():
         h0 = net.getNodeByName('h0')
         h0ip = h0.IP()
         # ./client [serIP] [serPort] [flowsize] [counts] [output]
-        net.getNodeByName('h1').popen("./client %s %d %d %d %s/%s" % (h0ip, args.qbport, args.qbsize, args.qbcount, args.dir, args.qbout), shell=True)
+        #net.getNodeByName('h1').popen("./client %s %d %d %d %s/%s" % (h0ip, args.qbport, args.qbsize, args.qbcount, args.dir, args.qbout), shell=True)
+        net.getNodeByName('h1').popen("./client %s %d %d %d >> %s/%s" % (h0ip, args.qbport, args.qbsize, args.qbcount, args.dir, args.qbout), shell=True)
 
     sleep_time = args.ping * args.interval * 2
     sleep(sleep_time)

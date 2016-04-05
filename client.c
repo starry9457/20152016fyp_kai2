@@ -28,8 +28,8 @@ int main(int argc, char **argv)
     int read_count = 0; //total number of bytes received
     unsigned long fct;  //Flow Completion Time
     int seq_count = 1;
-    FILE *fp = NULL;
-    char filename[255] = {'\0'};
+    //FILE *fp = NULL;
+    //char filename[255] = {'\0'};
     unsigned long totaltime = 0;
     unsigned long totalbyte = 0;
 
@@ -44,10 +44,12 @@ int main(int argc, char **argv)
         seq_count = atoi(argv[4]);
     }
 
+    /*
     if (argc >= 6)
     {
         strncpy(filename, argv[5], sizeof(filename));
     }
+    */
 
     //Get server address
     strncpy(server, argv[1], 15);
@@ -56,11 +58,13 @@ int main(int argc, char **argv)
     //Get data_size: char* to int
     data_size = atoi(argv[3]);
 
+    /*
     if (strlen(filename) != 0)
     {
         // printf("Will output to %s\n", filename);
         fp = fopen(filename, "w");
     }
+    */
 
     // printf("filename: %s\n", filename);
 
@@ -84,7 +88,7 @@ int main(int argc, char **argv)
         return 0;
     }
     for (int i = 0; i < seq_count; i++) {
-        printf("Client running seq: %d. Total seq: %d\n", i, seq_count);
+        //printf("Client running seq: %d. Total seq: %d\n", i, seq_count);
 
         //Get start time after connection establishment
         gettimeofday(&tv_start, NULL);
@@ -94,7 +98,7 @@ int main(int argc, char **argv)
         // printf("Seq %d: Sending message '%s' to %d\n", i, argv[3],sockfd);
         write_count = strlen(argv[3]);  // argv[3] ---> data_size
         while (write_count > 0)
-           write_count -= send(sockfd, argv[3], write_count, 0);
+            write_count -= send(sockfd, argv[3], write_count, 0);
 
         //Receive data
         while(1)
@@ -112,27 +116,30 @@ int main(int argc, char **argv)
         //Get end time after receiving all of the data
         gettimeofday(&tv_end, NULL);
 
-/*
+        /*
         //Close connection
         printf("Seq %d: Connection closed\n", i);
         close(sockfd);
-*/
+        */
 
         //Calculate time interval (unit: microsecond)
         fct = (tv_end.tv_sec - tv_start.tv_sec) * 1000000 + tv_end.tv_usec - tv_start.tv_usec;
 
         if (data_size * 1024 == read_count)
-            printf("From %s: %d KB %lu us\n", server, data_size, fct);
+            //printf("From %s: %d KB %lu us\n", server, data_size, fct);
+            printf("%d, %lu\n", i, fct);
         else
             printf("We receive %d (of %d) bytes.\n", read_count, data_size * 1024);
 
         totaltime += fct;
         totalbyte += read_count;
         
+        /*
         if (fp != NULL)
         {
             fprintf(fp, "%d, %lu\n", i, fct);
         }
+        */
         bzero(buf, RECV_BUFSIZ);
         read_count = 0;
         write_count = 0;
@@ -140,12 +147,14 @@ int main(int argc, char **argv)
     unsigned long avgtime = totaltime / seq_count;
     //Close connection
     printf("Total data transfered: %lu bytes. Total time: %lu us (average time: %lu us).\n", totalbyte, totaltime, avgtime);
+    /*
     if (fp != NULL)
     {
         fprintf(fp, "Total data transfered: %lu bytes. Total time: %lu us (average time: %lu us).\n", totalbyte, totaltime, avgtime);
         fclose(fp);
     }
-    printf("Client Connection closed\n");
+    */
+    //printf("Client Connection closed\n");
     close(sockfd);
     return 0;
 }
@@ -153,5 +162,5 @@ int main(int argc, char **argv)
 
 void usage(char *program)
 {
-    printf("%s [server IP] [server port] [request flow size(KB)] [counts(optional)] [output(optional)]\n", program);
+    printf("%s [server IP] [server port] [request flow size(KB)] [counts(optional)]\n", program);
 }
