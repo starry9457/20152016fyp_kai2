@@ -22,10 +22,10 @@ ks="20"
 qsizes=200
 
 # Reproducing Queue buildup
-qbport = 50001
-qbsize = 20
-qbc = 100
-qbout = dctcp-qb-qbs$qbsize-c$qbc.txt
+qbport=50001
+qbsize=20
+qbc=100
+qbout=dctcp-qb-qbs$qbsize-c$qbc.txt
 
 n=4     # Number of hosts
 for qsize in $qsizes; do
