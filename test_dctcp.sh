@@ -48,15 +48,15 @@ for qsize in $qsizes; do
         --red_avpkt $dctcp_red_avpkt \
         --red_burst $dctcp_red_burst \
         --red_prob $dctcp_red_prob \
-        --dctcp 1\
-        --red 1\
-        --ping 100\
-        --interval 0.3\
-        --ecn 1\
-        --qbport $qbport\
-        --qbsize $qbsize\
-        --qbcount $qbc\
-        --qbout qbout\
+        --dctcp 1 \
+        --red 1 \
+        --ping 100 \
+        --interval 0.3 \
+        --ecn 1 \
+        --qbport $qbport \
+        --qbsize $qbsize \
+        --qbcount $qbc \
+        --qbout $qbout \
         -qb 1 \
         --iperf $iperf -n $n
 
