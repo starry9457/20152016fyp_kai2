@@ -8,7 +8,7 @@ echo "DCTCP Test Experiment"
 echo "------------------------------------------------------------------------"
 
 time=30
-bwnet=100
+bwnet=1000
 delay=1
 
 # Red settings (originated for DCTCP)
@@ -24,7 +24,7 @@ qsizes=200
 # Reproducing Queue buildup
 qbport=50001
 qbsize=20
-qbc=100
+qbc=1000
 qbout=dctcp-qb-qbs$qbsize-c$qbc.txt
 
 n=4     # Number of hosts

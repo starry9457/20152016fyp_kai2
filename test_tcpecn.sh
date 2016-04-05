@@ -4,11 +4,11 @@
 # using sudo.
 
 echo "------------------------------------------------------------------------"
-echo "TCP/ECN Experiment"
+echo "TCP/ECN Test Experiment"
 echo "------------------------------------------------------------------------"
 
 time=30
-bwnet=100
+bwnet=1000
 delay=1
 
 # Red settings (originated for DCTCP)
@@ -20,7 +20,14 @@ iperf_port=5001
 iperf=~/iperf-patched/src/iperf
 ks="20"
 qsizes=200
-n=3     # Number of hosts
+
+# Reproducing Queue buildup
+qbport=50001
+qbsize=20
+qbc=1000
+qbout=tcpecn-qb-qbs$qbsize-c$qbc.txt
+
+n=4     # Number of hosts
 for qsize in $qsizes; do
     mkdir tcpecngraphs-q$qsize
     dirf=tcpecngraphs-q$qsize
@@ -34,18 +41,23 @@ for qsize in $qsizes; do
         echo "------------------------------------------------------------------------"
         dctcp_red_min=`expr $k \\* $dctcp_red_avpkt`
         dctcp_red_max=`expr $dctcp_red_min + 1`
-        python dctcp.py --delay $delay -b $bwnet -B $bwnet -k $k -d $dir1 --maxq $qsize -t $time \
+        python dctcp_iperf.py --delay $delay -b $bwnet -B $bwnet -k $k -d $dir1 --maxq $qsize -t $time \
         --red_limit $dctcp_red_limit \
         --red_min $dctcp_red_min \
         --red_max $dctcp_red_max \
         --red_avpkt $dctcp_red_avpkt \
         --red_burst $dctcp_red_burst \
         --red_prob $dctcp_red_prob \
-        --dctcp 0\
-        --red 1\
-        --ping 100\
-        --interval 0.3\
-        --ecn 1\
+        --dctcp 0 \
+        --red 1 \
+        --ping 100 \
+        --interval 0.3 \
+        --ecn 1 \
+        --qbport $qbport \
+        --qbsize $qbsize \
+        --qbcount $qbc \
+        --qbout $qbout \
+        -qb 1 \
         --iperf $iperf -n $n
 
         echo ""
