@@ -191,6 +191,29 @@ parser.add_argument('--iperf',
                     help="Path to custom iperf",
                     required=True)
 
+parser.add_argument('--queuebuildup', '-qb',
+                    help="Enable queue buildup (QB)",
+                    type=int,
+                    default="0")
+
+parser.add_argument('--qbport', 
+                    help="QB port",
+                    type=int,
+                    default="50001")
+
+parser.add_argument('--qbsize',
+                    help="QB size",
+                    type=int,
+                    default="50001")
+
+parser.add_argument('--qbcount', '-qbc', 
+                    help="QB counts",
+                    type=int,
+                    default="1")
+
+parser.add_argument('--qbout', 
+                    help="QB output")
+
 ############################
 # Linux uses CUBIC-TCP by default that doesn't have the usual sawtooth
 # behaviour.  For those who are curious, invoke this script with
@@ -254,9 +277,11 @@ def start_receiver(net):
     #h0 = net.getNodeByName('h0')
     #print "Starting iperf server..."
     #server = h0.popen("%s -s -w 16m" % CUSTOM_IPERF_PATH)
-    h1 = net.getNodeByName('h0')
+    h0 = net.getNodeByName('h0')
     print "Starting iperf server at h0..."
-    server = h1.popen("%s -s -w 16m" % CUSTOM_IPERF_PATH)
+    server = h0.popen("%s -s -w 16m" % CUSTOM_IPERF_PATH)
+    h0.popen("./server %d" % args.qbport)
+
 
 # Start senders sending traffic to receiver h0
 def start_senders(net):
@@ -272,7 +297,7 @@ def start_senders(net):
     client2 = h2.popen("%s -c " % CUSTOM_IPERF_PATH + h0.IP() + " -t 10000")
     print "Starting iperf client at h3"
     h3 = net.getNodeByName('h3')
-    client2 = h3.popen("%s -c " % CUSTOM_IPERF_PATH + h0.IP() + " -t 10000")
+    client3 = h3.popen("%s -c " % CUSTOM_IPERF_PATH + h0.IP() + " -t 10000")
 
 # Function to compute the median
 def median(l):
@@ -388,8 +413,15 @@ def dctcp():
     #    node_name = 'h%d' % (i)
     #    for j in xrange(4):
     #        net.getNodeByName(node_name).popen("/bin/ping 10.0.0.1 -Q %d -c %d -i %f >> %s/k%d-%s-tos%d-ping.txt" % (j, args.ping, args.interval, args.dir, args.mark_threshold, node_name, j), shell=True)            
+    
+    # Queue buildup reproduction
+    if (args.queuebuildup > 0):
+        h0 = net.getNodeByName('h0')
+        h0ip = h0.IP()
+        # ./client [serIP] [serPort] [flowsize] [counts] [output]
+        net.getNodeByName('h1').popen("./client %s %d %d %d %s/%s" % (h0ip, args.qbport, args.qbsize, args.qbcount, args.dir, args.qbout), shell=True)
 
-    sleep_time = args.ping * args.interval
+    sleep_time = args.ping * args.interval * 2
     sleep(sleep_time)
 	
     stop_tcpprobe()

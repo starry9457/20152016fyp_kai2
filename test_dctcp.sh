@@ -20,6 +20,13 @@ iperf_port=5001
 iperf=~/iperf-patched/src/iperf
 ks="20"
 qsizes=200
+
+# Reproducing Queue buildup
+qbport = 50001
+qbsize = 20
+qbc = 100
+qbout = dctcp-qb-qbs$qbsize-c$qbc.txt
+
 n=4     # Number of hosts
 for qsize in $qsizes; do
     mkdir dctcpgraphs-q$qsize
@@ -46,6 +53,11 @@ for qsize in $qsizes; do
         --ping 100\
         --interval 0.3\
         --ecn 1\
+        --qbport $qbport\
+        --qbsize $qbsize\
+        --qbcount $qbc\
+        --qbout qbout\
+        -qb 1 \
         --iperf $iperf -n $n
 
         echo ""
