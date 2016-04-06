@@ -12,7 +12,7 @@ for ((i=0; i<$n; i++)); do
     for ((j=0; j<4; j++)); do
     	echo "TOS: $j"
         for k in $ks; do
-        	dir1=qbtcpecnbb-q$qsize-k$k
+        	dir1=qb-tcpecnbb-q$qsize-k$k
             tcpecn_src=$dir1/k$k-h$i-tos$j-ping.txt
             echo $k, |tr "\n" " " 
             pingavg=`awk -F '/' 'END {print $5}' "$tcpecn_src"`
