@@ -13,7 +13,7 @@ for ((i=0; i<$n; i++)); do
     	echo "TOS: $j"
         for k in $ks; do
         	dir1=qb-dctcpbb-q$qsize-k$k
-            dctcp_src=$dir1/k$k-h$i-tos$j-ping.txt
+            dctcp_src=$dir1/k$k-h4-ping.txt
             echo $k, |tr "\n" " " 
             pingavg=`awk -F '/' 'END {print $5}' "$dctcp_src"`
             echo $pingavg
