@@ -424,10 +424,10 @@ def dctcp():
         # if (reference_rate > 0):							# Starry: Original is 20, but why?
         if (True):
             with open(args.dir+"/k.txt", "a") as myfile:
-            myfile.write(str(args.mark_threshold)+",")
-            myfile.write(str(reference_rate))
-            myfile.write("\n")
-            myfile.close()
+                myfile.write(str(args.mark_threshold)+",")
+                myfile.write(str(reference_rate))
+                myfile.write("\n")
+                myfile.close()
 
     # Wait for some while before the ping test.
     sleep(5)
