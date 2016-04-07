@@ -29,10 +29,10 @@ CALIBRATION_SKIP = 20
 CALIBRATION_SAMPLES = 10
 
 # Number of samples to take in get_rates() before returning.
-NSAMPLES = 8
+NSAMPLES = 40
 
 # Time to wait between samples, in seconds, as a float.
-SAMPLE_PERIOD_SEC = 1.0
+SAMPLE_PERIOD_SEC = 0.5
 
 # Time to wait for first sample, in seconds, as a float.
 SAMPLE_WAIT_SEC = 3.0
@@ -390,7 +390,7 @@ def dctcp():
 
     # Allow for connections to be set up initially and then revert back the
     # speed of the bottleneck link to the original passed value
-    iface="s0-eth1"
+    iface="s0-eth3"
     set_speed(iface, "2Gbit")
     start_receiver(net)
     start_senders(net)
@@ -400,7 +400,7 @@ def dctcp():
     sleep(5)
 
     # Start monitoring the queue sizes.
-    qmon = start_qmon(iface='s0-eth1',
+    qmon = start_qmon(iface='s0-eth3',
                       outfile='%s/q.txt' % (args.dir))
 
     # Start all the monitoring processes
@@ -417,7 +417,8 @@ def dctcp():
     # If the experiment involves marking bandwidth for different threshold
     # then get the rate of the bottlenect link
     if(args.mark_threshold):
-	rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
+    rates = get_rates(iface='s0-eth3', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
+    #rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
 	rates = rates[CALIBRATION_SKIP:]
 	reference_rate = median(rates)
 	# if (reference_rate > 0):							# Starry: Original is 20, but why?
