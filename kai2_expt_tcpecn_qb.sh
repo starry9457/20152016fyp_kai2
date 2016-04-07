@@ -25,7 +25,7 @@ qsizes=200
 qbport=50001
 qbsize=10
 qbc=1000
-qbdinterval=0.1
+qbinterval=0.1
 qbout=tcpecn-qb-qbs$qbsize-c$qbc.txt
 
 n=4     # Number of hosts
@@ -57,7 +57,7 @@ for qsize in $qsizes; do
         --qbport $qbport \
         --qbsize $qbsize \
         --qbcount $qbc \
-        --qbdinterval $qbdinterval \
+        --qbinterval $qbinterval \
         --qbout $qbout \
         -qb 1 \
         --iperf $iperf -n $n
