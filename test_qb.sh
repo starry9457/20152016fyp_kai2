@@ -18,15 +18,16 @@ red_burst=100
 red_prob=1
 iperf_port=5001
 iperf=~/iperf-patched/src/iperf
+#ks="3 5 8 15 20 30 40 60 80 100"
 ks="20"
 qsizes=200
-n=50     # Number of hosts
+n=4                # Number of hosts
 
 # Reproducing Queue buildup
-qbport=50001    # Port
-qbsize=10       # Size for each request
-qbc=1000        # counts
-qbinterval=0.1  # interval
+qbport=50001        # Port
+qbsize=10           # Size for each request
+qbc=1000            # counts
+qbinterval=0.1      # interval
 
 # Ping
 pingc=100           # counts
