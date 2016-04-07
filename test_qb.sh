@@ -48,7 +48,7 @@ for qsize in $qsizes; do
         echo "------------------------------------------------------------------------"
         dctcp_red_min=`expr $k \\* $red_avpkt`
         dctcp_red_max=`expr $dctcp_red_min + 1`
-        python dctcp_iperf.py --delay $delay -b $bwnet -B $bwnet -k $k -d $dctcpdir1 --maxq $qsize -t $time \
+        python test_dctcp_iperf.py --delay $delay -b $bwnet -B $bwnet -k $k -d $dctcpdir1 --maxq $qsize -t $time \
         --red_limit $red_limit \
         --red_min $dctcp_red_min \
         --red_max $dctcp_red_max \
@@ -111,7 +111,7 @@ for qsize in $qsizes; do
         echo "------------------------------------------------------------------------"
         tcpecn_red_min=`expr $k \\* $red_avpkt`
         tcpecn_red_max=`expr $tcpecn_red_min + 1`
-        python dctcp_iperf.py --delay $delay -b $bwnet -B $bwnet -k $k -d $tcpecndir1 --maxq $qsize -t $time \
+        python test_dctcp_iperf.py --delay $delay -b $bwnet -B $bwnet -k $k -d $tcpecndir1 --maxq $qsize -t $time \
         --red_limit $red_limit \
         --red_min $tcpecn_red_min \
         --red_max $tcpecn_red_max \
