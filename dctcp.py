@@ -29,10 +29,10 @@ CALIBRATION_SKIP = 20
 CALIBRATION_SAMPLES = 10
 
 # Number of samples to take in get_rates() before returning.
-NSAMPLES = 8
+NSAMPLES = 40
 
 # Time to wait between samples, in seconds, as a float.
-SAMPLE_PERIOD_SEC = 1.0
+SAMPLE_PERIOD_SEC = 0.5
 
 # Time to wait for first sample, in seconds, as a float.
 SAMPLE_WAIT_SEC = 3.0
@@ -362,7 +362,7 @@ def dctcp():
 	rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
 	rates = rates[CALIBRATION_SKIP:]
 	reference_rate = median(rates)
-	if (reference_rate > 0):							# Starry: Original is 20, but why?
+	if (True):							# Starry: Original is 20, but why?
 	    with open(args.dir+"/k.txt", "a") as myfile:
 		myfile.write(str(args.mark_threshold)+",")
 		myfile.write(str(reference_rate))
