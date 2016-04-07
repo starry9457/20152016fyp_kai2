@@ -417,17 +417,17 @@ def dctcp():
     # If the experiment involves marking bandwidth for different threshold
     # then get the rate of the bottlenect link
     if(args.mark_threshold):
-    rates = get_rates(iface='s0-eth3', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
-    #rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
-	rates = rates[CALIBRATION_SKIP:]
-	reference_rate = median(rates)
-	# if (reference_rate > 0):							# Starry: Original is 20, but why?
-    if (True):
-	    with open(args.dir+"/k.txt", "a") as myfile:
-		myfile.write(str(args.mark_threshold)+",")
-		myfile.write(str(reference_rate))
-		myfile.write("\n")
-		myfile.close()
+        rates = get_rates(iface='s0-eth3', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
+        #rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
+        rates = rates[CALIBRATION_SKIP:]
+        reference_rate = median(rates)
+        # if (reference_rate > 0):							# Starry: Original is 20, but why?
+        if (True):
+            with open(args.dir+"/k.txt", "a") as myfile:
+            myfile.write(str(args.mark_threshold)+",")
+            myfile.write(str(reference_rate))
+            myfile.write("\n")
+            myfile.close()
 
     # Wait for some while before the ping test.
     sleep(5)
@@ -452,7 +452,7 @@ def dctcp():
 
     sleep_time = args.ping * args.interval
     sleep(sleep_time)
-	
+
     stop_tcpprobe()
     qmon.terminate()
     net.stop()
