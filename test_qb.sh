@@ -20,7 +20,7 @@ iperf_port=5001
 iperf=~/iperf-patched/src/iperf
 ks="20"
 qsizes=200
-n=200     # Number of hosts
+n=50     # Number of hosts
 
 # Reproducing Queue buildup
 qbport=50001

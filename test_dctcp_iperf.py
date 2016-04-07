@@ -421,7 +421,7 @@ def dctcp():
 	rates = rates[CALIBRATION_SKIP:]
 	reference_rate = median(rates)
 	# if (reference_rate > 0):							# Starry: Original is 20, but why?
-    if (true):
+    if (True):
 	    with open(args.dir+"/k.txt", "a") as myfile:
 		myfile.write(str(args.mark_threshold)+",")
 		myfile.write(str(reference_rate))
