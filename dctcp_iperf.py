@@ -211,6 +211,11 @@ parser.add_argument('--qbcount', '-qbc',
                     type=int,
                     default="1")
 
+parser.add_argument('--qbinterval', 
+                    help="QB cinterval",
+                    type=float,
+                    default="0.0")
+
 parser.add_argument('--qbout', 
                     help="QB output")
 

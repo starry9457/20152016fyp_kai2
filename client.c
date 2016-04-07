@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -32,6 +33,8 @@ int main(int argc, char **argv)
     //char filename[255] = {'\0'};
     unsigned long totaltime = 0;
     unsigned long totalbyte = 0;
+    struct timespec interval = {
+    };
 
     if (argc < 4)
     {
@@ -43,13 +46,22 @@ int main(int argc, char **argv)
     {
         seq_count = atoi(argv[4]);
     }
-
-    /*
+    
     if (argc >= 6)
     {
-        strncpy(filename, argv[5], sizeof(filename));
+        int interval_sec = atoi(argv[5]);
+        long interval_ns = ((long) (atof(argv[5]) * 1000000000)) % 1000000000;
+
+
+        interval.tv_sec = interval_sec;
+        interval.tv_nsec = interval_ns;
     }
-    */
+    else
+    {
+        interval.tv_sec = 0;
+        interval.tv_nsec = 0;
+    }
+    // printf("interval: %ld sec, %ld ns.\n" , interval.tv_sec, interval.tv_nsec);
 
     //Get server address
     strncpy(server, argv[1], 15);
@@ -143,6 +155,9 @@ int main(int argc, char **argv)
         bzero(buf, RECV_BUFSIZ);
         read_count = 0;
         write_count = 0;
+
+        // Delay interval
+        nanosleep(&interval, (struct timespec *)NULL);
     }
     unsigned long avgtime = totaltime / seq_count;
     //Close connection
@@ -162,5 +177,5 @@ int main(int argc, char **argv)
 
 void usage(char *program)
 {
-    printf("%s [server IP] [server port] [request flow size(KB)] [counts(optional)]\n", program);
+    printf("%s [server IP] [server port] [request flow size(KB)] [counts(optional)] [interval(optional)]\n", program);
 }
