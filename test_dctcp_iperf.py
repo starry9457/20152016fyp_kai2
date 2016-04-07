@@ -307,7 +307,7 @@ def start_senders(net):
     h1.popen("./server %d" % args.qbport)
 
     if (args.hosts > 2):
-        for i in range (2, args.hosts)
+        for i in range (2, args.hosts):
         node_name = 'h%d' % (i)
         server_node = net.getNodeByName(node_name)
         print "Starting iperf server at %s" % node_name
