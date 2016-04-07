@@ -23,10 +23,14 @@ qsizes=200
 n=50     # Number of hosts
 
 # Reproducing Queue buildup
-qbport=50001
-qbsize=10
-qbc=1000
-qbinterval=0.1
+qbport=50001    # Port
+qbsize=10       # Size for each request
+qbc=1000        # counts
+qbinterval=0.1  # interval
+
+# Ping
+pingc=100           # counts
+pinginterval=0.3    # interval
 
 echo ""
 echo "------------------------------------------------------------------------"
@@ -57,8 +61,8 @@ for qsize in $qsizes; do
         --red_prob $red_prob \
         --dctcp 1 \
         --red 1 \
-        --ping 100 \
-        --interval 0.3 \
+        --ping $pingc \
+        --interval $pinginterval \
         --ecn 1 \
         --qbport $qbport \
         --qbsize $qbsize \
@@ -120,8 +124,8 @@ for qsize in $qsizes; do
         --red_prob $red_prob \
         --dctcp 0 \
         --red 1 \
-        --ping 100 \
-        --interval 0.3 \
+        --ping $pingc \
+        --interval $pinginterval \
         --ecn 1 \
         --qbport $qbport \
         --qbsize $qbsize \

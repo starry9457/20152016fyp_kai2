@@ -431,11 +431,15 @@ def dctcp():
     # Wait for some while before the ping test.
     sleep(5)
     # ping test
-    net.getNodeByName('h0').popen("/bin/ping 10.0.0.2 -Q 2 -c %d -i %f >> %s/k%d-h1-ping.txt" % (args.ping, args.interval, args.dir, args.mark_threshold), shell=True)
-    #for i in xrange(args.hosts):
-    #    node_name = 'h%d' % (i)
-    #    for j in xrange(4):
-    #        net.getNodeByName(node_name).popen("/bin/ping 10.0.0.1 -Q %d -c %d -i %f >> %s/k%d-%s-tos%d-ping.txt" % (j, args.ping, args.interval, args.dir, args.mark_threshold, node_name, j), shell=True)            
+    #net.getNodeByName('h0').popen("/bin/ping 10.0.0.2 -Q 2 -c %d -i %f >> %s/k%d-h1-ping.txt" % (args.ping, args.interval, args.dir, args.mark_threshold), shell=True)
+    #h0 = net.getNodeByName('h0')
+    for i in xrange(args.hosts):
+        node_name = 'h%d' % (i)
+        node = net.getNodeByName(node_name)
+        nodeip = node.IP()
+        for j in xrange(4):
+            #net.getNodeByName(node_name).popen("/bin/ping 10.0.0.1 -Q %d -c %d -i %f >> %s/k%d-%s-tos%d-ping.txt" % (j, args.ping, args.interval, args.dir, args.mark_threshold, node_name, j), shell=True)            
+            net.getNodeByName('h0').popen("/bin/ping %s -Q %d -c %d -i %f >> %s/k%d-%s-tos%d-ping.txt" % (nodeip, j, args.ping, args.interval, args.dir, args.mark_threshold, node_name, j), shell=True)            
     
     # Queue buildup reproduction
     if (args.queuebuildup > 0):
