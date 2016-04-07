@@ -38,7 +38,7 @@ for qsize in $qsizes; do
         dir1=qb-tcpecnbb-q$qsize-k$k
         echo ""
         echo "------------------------------------------------------------------------"
-        echo "kai2_expt_dctcp_qb.sh: Testing with k: $k, Queue Size: $qsize"
+        echo "kai2_expt_tcpecn_qb.sh: Testing with k: $k, Queue Size: $qsize"
         echo "------------------------------------------------------------------------"
         dctcp_red_min=`expr $k \\* $dctcp_red_avpkt`
         dctcp_red_max=`expr $dctcp_red_min + 1`
@@ -64,7 +64,7 @@ for qsize in $qsizes; do
 
         echo ""
         echo "------------------------------------------------------------------------"
-        echo "kai2_expt_dctcp_qb.sh: Generating graph of Queue Occupancy vs "
+        echo "kai2_expt_tcpecn_qb.sh: Generating graph of Queue Occupancy vs "
         echo "Marking Threshold (K) "
         echo "with k: $k, Queue Size: $qsize"
         echo "------------------------------------------------------------------------"
@@ -72,7 +72,7 @@ for qsize in $qsizes; do
 
         echo ""
         echo "------------------------------------------------------------------------"
-        echo "kai2_expt_dctcp_qb.sh: Combining the data of Marking Threshold (K), which will"
+        echo "kai2_expt_tcpecn_qb.sh: Combining the data of Marking Threshold (K), which will"
         echo "be used to generate the graph Throughput vs Marking Threshold (K) later"
         echo "with k: $k"
         echo "------------------------------------------------------------------------"
@@ -82,7 +82,7 @@ done
 
 echo ""
 echo "------------------------------------------------------------------------"
-echo "kai2_expt_dctcp_qb.sh: Generating graph of Throughput vs Marking Threshold (K) "
+echo "kai2_expt_tcpecn_qb.sh: Generating graph of Throughput vs Marking Threshold (K) "
 echo "------------------------------------------------------------------------"
 python plot_k_sweep_qb.py -f $dirf/k.txt -l Ksweep -o $dirf/k_sweep.png
 
