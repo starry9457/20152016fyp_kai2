@@ -308,12 +308,12 @@ def start_senders(net):
 
     if (args.hosts > 2):
         for i in range (2, args.hosts):
-        node_name = 'h%d' % (i)
-        server_node = net.getNodeByName(node_name)
-        print "Starting iperf server at %s" % node_name
-        server_node.popen("%s -s -w 16m" % CUSTOM_IPERF_PATH)
-        # connect the client to this server
-        h0.popen("%s -c " % CUSTOM_IPERF_PATH + server_node.IP() + " -t 1000 -S 2")
+            node_name = 'h%d' % (i)
+            server_node = net.getNodeByName(node_name)
+            print "Starting iperf server at %s" % node_name
+            server_node.popen("%s -s -w 16m" % CUSTOM_IPERF_PATH)
+            # connect the client to this server
+            h0.popen("%s -c " % CUSTOM_IPERF_PATH + server_node.IP() + " -t 1000 -S 2")
 
     #h2 = net.getNodeByName('h2')
     #client2 = h2.popen("%s -c " % CUSTOM_IPERF_PATH + h0.IP() + " -t 1000")
