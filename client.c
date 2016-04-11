@@ -35,6 +35,8 @@ int main(int argc, char **argv)
     unsigned long totalbyte = 0;
     struct timespec interval = {
     };
+    struct timeval startconn;    //Start time (after three way handshake)
+    struct timeval endconn;  //End time
 
     if (argc < 4)
     {
@@ -99,6 +101,8 @@ int main(int argc, char **argv)
         printf("Can not connect to %s\n", server);
         return 0;
     }
+    //Get start time after connection establishment
+    gettimeofday(&startconn, NULL);
     for (int i = 0; i < seq_count; i++) {
         //printf("Client running seq: %d. Total seq: %d\n", i, seq_count);
 
@@ -125,7 +129,7 @@ int main(int argc, char **argv)
                 break;
         }
         
-        //Get end time after receiving all of the data
+        //Get end time after receiving the data
         gettimeofday(&tv_end, NULL);
 
         /*
@@ -159,9 +163,14 @@ int main(int argc, char **argv)
         // Delay interval
         nanosleep(&interval, (struct timespec *)NULL);
     }
-    unsigned long avgtime = totaltime / seq_count;
     //Close connection
+    close(sockfd);
+    //Get end time after receiving all of the data
+    gettimeofday(&endconn, NULL);
+    unsigned long timeused = (endconn.tv_sec - startconn.tv_sec) * 1000000 + endconn.tv_usec - startconn.tv_usec;
+    unsigned long avgtime = totaltime / seq_count;
     printf("Total data transfered: %lu bytes. Total time: %lu us (average time: %lu us).\n", totalbyte, totaltime, avgtime);
+    printf("Total time(from start connection to end all connection): %lu us.\n", timeused);
     /*
     if (fp != NULL)
     {
@@ -170,7 +179,6 @@ int main(int argc, char **argv)
     }
     */
     //printf("Client Connection closed\n");
-    close(sockfd);
     return 0;
 }
 
