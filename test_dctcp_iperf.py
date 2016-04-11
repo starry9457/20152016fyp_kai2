@@ -61,7 +61,7 @@ def get_txbytes(iface):
     #Inter-|   Receive                                                |  Transmit
     # face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed
     # lo: 6175728   53444    0    0    0     0          0         0  6175728   53444    0    0    0     0       0          0
-    return float(line.split()[9])
+    return float(line.split()[1])
 
 
 def get_rates(iface, nsamples=NSAMPLES, period=SAMPLE_PERIOD_SEC,
@@ -279,18 +279,18 @@ def start_qmon(iface, interval_sec=0.5, outfile="q.txt"):
 
 # receiver = Client
 # Start the receiver of the flows, its fixed to be h0 here
-def start_receiver(net):
+#def start_receiver(net):
     #h0 = net.getNodeByName('h0')
     #print "Starting iperf server..."
     #server = h0.popen("%s -s -w 16m" % CUSTOM_IPERF_PATH)
-    h0 = net.getNodeByName('h0')
-    print "Starting iperf client at h0... (receiver)"
-    h0.popen("%s -c " % CUSTOM_IPERF_PATH + " -t 1000 -S 2")
+    #h0 = net.getNodeByName('h0')
+    #print "Starting iperf client at h0... (receiver)"
+    #h0.popen("%s -c " % CUSTOM_IPERF_PATH + " -t 1000 -S 2")
     #h0.popen("./server %d" % args.qbport)
 
 # sender = Server
 # Start senders sending traffic to receiver h0
-def start_senders(net):
+def start_sender_receiver(net):
     #h0 = net.getNodeByName('h0')
     #for i in range(args.hosts-1):
     #    print "Starting iperf client..."
@@ -302,17 +302,18 @@ def start_senders(net):
 
     # first server.
     h1 = net.getNodeByName('h1')
-    print "Starting iperf server at h1"
-    server1 = h1.popen("%s -s -w 16m" % CUSTOM_IPERF_PATH)
+    print "Starting iperf server at h1 (short flows)"
+    #server1 = h1.popen("%s -s -w 16m" % CUSTOM_IPERF_PATH)
     h1.popen("./server %d" % args.qbport)
 
     if (args.hosts > 2):
         for i in range (2, args.hosts):
             node_name = 'h%d' % (i)
             server_node = net.getNodeByName(node_name)
-            print "Starting iperf server at %s" % node_name
+            print "Starting iperf server at %s (large flows)" % node_name
             server_node.popen("%s -s -w 16m" % CUSTOM_IPERF_PATH)
             # connect the client to this server
+            print "Starting iperf client ..."
             h0.popen("%s -c " % CUSTOM_IPERF_PATH + server_node.IP() + " -t 1000 -S 2")
 
     #h2 = net.getNodeByName('h2')
@@ -390,17 +391,17 @@ def dctcp():
 
     # Allow for connections to be set up initially and then revert back the
     # speed of the bottleneck link to the original passed value
-    iface="s0-eth3"
+    iface="s0-eth1"
     set_speed(iface, "2Gbit")
-    start_receiver(net)
-    start_senders(net)
+    #start_receiver(net)
+    start_sender_receiver(net)
     sleep(5)
     set_speed(iface, "%.2fMbit" % args.bw_net)
     # Let the experiment stabilize initially
     sleep(5)
 
     # Start monitoring the queue sizes.
-    qmon = start_qmon(iface='s0-eth3',
+    qmon = start_qmon(iface='s0-eth1',
                       outfile='%s/q.txt' % (args.dir))
 
     # Start all the monitoring processes
@@ -417,7 +418,7 @@ def dctcp():
     # If the experiment involves marking bandwidth for different threshold
     # then get the rate of the bottlenect link
     if(args.mark_threshold):
-        rates = get_rates(iface='s0-eth3', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
+        rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
         #rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
         rates = rates[CALIBRATION_SKIP:]
         reference_rate = median(rates)

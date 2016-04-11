@@ -23,10 +23,9 @@ qsizes=200
 
 # Reproducing Queue buildup
 qbport=50001
-qbsize=10
+qbsize=20
 qbc=1000
-qbinterval=0.1
-qbout=tcpecn-qb-qbs$qbsize-c$qbc.txt
+qbinterval=0
 
 n=4     # Number of hosts
 for qsize in $qsizes; do
@@ -36,6 +35,7 @@ for qsize in $qsizes; do
     for k in $ks; do
         mkdir qb-tcpecnbb-q$qsize-k$k
         dir1=qb-tcpecnbb-q$qsize-k$k
+        qbout=tcpecn-qb-k$k-qbs$qbsize-c$qbc.txt
         echo ""
         echo "------------------------------------------------------------------------"
         echo "kai2_expt_tcpecn_qb.sh: Testing with k: $k, Queue Size: $qsize"
