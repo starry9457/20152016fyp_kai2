@@ -401,8 +401,14 @@ def dctcp():
     sleep(5)
 
     # Start monitoring the queue sizes.
-    qmon = start_qmon(iface='s0-eth1',
-                      outfile='%s/q.txt' % (args.dir))
+    qmon1 = start_qmon(iface='s0-eth1',
+                      outfile='%s/q1.txt' % (args.dir))
+    qmon2 = start_qmon(iface='s0-eth2',
+                      outfile='%s/q2.txt' % (args.dir))
+    qmon3 = start_qmon(iface='s0-eth3',
+                      outfile='%s/q3.txt' % (args.dir))
+    qmon4 = start_qmon(iface='s0-eth4',
+                      outfile='%s/q4.txt' % (args.dir))
 
     # Start all the monitoring processes
     start_tcpprobe("cwnd.txt")
@@ -422,9 +428,42 @@ def dctcp():
         #rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
         rates = rates[CALIBRATION_SKIP:]
         reference_rate = median(rates)
-        # if (reference_rate > 0):							# Starry: Original is 20, but why?
+        # if (reference_rate > 0):                          # Starry: Original is 20, but why?
         if (True):
-            with open(args.dir+"/k.txt", "a") as myfile:
+            with open(args.dir+"/k1.txt", "a") as myfile:
+                myfile.write(str(args.mark_threshold)+",")
+                myfile.write(str(reference_rate))
+                myfile.write("\n")
+                myfile.close()
+        rates = get_rates(iface='s0-eth2', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
+        #rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
+        rates = rates[CALIBRATION_SKIP:]
+        reference_rate = median(rates)
+        # if (reference_rate > 0):                          # Starry: Original is 20, but why?
+        if (True):
+            with open(args.dir+"/k2.txt", "a") as myfile:
+                myfile.write(str(args.mark_threshold)+",")
+                myfile.write(str(reference_rate))
+                myfile.write("\n")
+                myfile.close()
+        rates = get_rates(iface='s0-eth3', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
+        #rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
+        rates = rates[CALIBRATION_SKIP:]
+        reference_rate = median(rates)
+        # if (reference_rate > 0):                          # Starry: Original is 20, but why?
+        if (True):
+            with open(args.dir+"/k3.txt", "a") as myfile:
+                myfile.write(str(args.mark_threshold)+",")
+                myfile.write(str(reference_rate))
+                myfile.write("\n")
+                myfile.close()
+        rates = get_rates(iface='s0-eth4', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
+        #rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
+        rates = rates[CALIBRATION_SKIP:]
+        reference_rate = median(rates)
+        # if (reference_rate > 0):                          # Starry: Original is 20, but why?
+        if (True):
+            with open(args.dir+"/k4.txt", "a") as myfile:
                 myfile.write(str(args.mark_threshold)+",")
                 myfile.write(str(reference_rate))
                 myfile.write("\n")
@@ -455,7 +494,10 @@ def dctcp():
     sleep(sleep_time)
 
     stop_tcpprobe()
-    qmon.terminate()
+    qmon1.terminate()
+    qmon2.terminate()
+    qmon3.terminate()
+    qmon4.terminate()
     net.stop()
     # Ensure that all processes you create within Mininet are killed.
     # Sometimes they require manual killing.
