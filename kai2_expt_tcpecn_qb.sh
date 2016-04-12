@@ -23,9 +23,9 @@ qsizes=200
 
 # Reproducing Queue buildup
 qbport=50001
-qbsize=20
+qbsize=10
 qbc=1000
-qbinterval=0
+qbinterval=0.1
 
 n=4     # Number of hosts
 for qsize in $qsizes; do
