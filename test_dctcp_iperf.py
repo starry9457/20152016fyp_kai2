@@ -61,10 +61,26 @@ def get_txbytes(iface):
     #Inter-|   Receive                                                |  Transmit
     # face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed
     # lo: 6175728   53444    0    0    0     0          0         0  6175728   53444    0    0    0     0       0          0
+    return float(line.split()[9])
+
+# Get the number of bytes on that particular interface
+def get_rxbytes(iface):
+    f = open('/proc/net/dev', 'r')
+    lines = f.readlines()
+    for line in lines:
+        if iface in line:
+            break
+    f.close()
+    if not line:
+        raise Exception("could not find iface %s in /proc/net/dev:%s" %
+                        (iface, lines))
+    # Extract TX bytes from:
+    #Inter-|   Receive                                                |  Transmit
+    # face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed
+    # lo: 6175728   53444    0    0    0     0          0         0  6175728   53444    0    0    0     0       0          0
     return float(line.split()[1])
 
-
-def get_rates(iface, nsamples=NSAMPLES, period=SAMPLE_PERIOD_SEC,
+def get_txrates(iface, nsamples=NSAMPLES, period=SAMPLE_PERIOD_SEC,
               wait=SAMPLE_WAIT_SEC):
     """Returns the interface @iface's current utilization in Mb/s.  It
     returns @nsamples samples, and each sample is the average
@@ -90,6 +106,37 @@ def get_rates(iface, nsamples=NSAMPLES, period=SAMPLE_PERIOD_SEC,
             # Wait for 1 second sample
             ret.append(rate)
         last_txbytes = txbytes
+        print '.',
+        sys.stdout.flush()
+        sleep(period)
+    return ret
+
+def get_rxrates(iface, nsamples=NSAMPLES, period=SAMPLE_PERIOD_SEC,
+              wait=SAMPLE_WAIT_SEC):
+    """Returns the interface @iface's current utilization in Mb/s.  It
+    returns @nsamples samples, and each sample is the average
+    utilization measured over @period time.  Before measuring it waits
+    for @wait seconds to 'warm up'."""
+    # Returning nsamples requires one extra to start the timer.
+    nsamples += 1
+    last_time = 0
+    last_rxbytes = 0
+    ret = []
+    sleep(wait)
+    while nsamples:
+        nsamples -= 1
+        rxbytes = get_rxbytes(iface)
+        now = time()
+        elapsed = now - last_time
+        #if last_time:
+        #    print "elapsed: %0.4f" % (now - last_time)
+        last_time = now
+        # Get rate in Mbps; correct for elapsed time.
+        rate = (rxbytes - last_rxbytes) * 8.0 / 1e6 / elapsed
+        if last_rxbytes != 0:
+            # Wait for 1 second sample
+            ret.append(rate)
+        last_rxbytes = rxbytes
         print '.',
         sys.stdout.flush()
         sleep(period)
@@ -204,7 +251,7 @@ parser.add_argument('--qbport',
 parser.add_argument('--qbsize',
                     help="QB size",
                     type=int,
-                    default="50001")
+                    default="20")
 
 parser.add_argument('--qbcount', '-qbc', 
                     help="QB counts",
@@ -271,7 +318,7 @@ def ResetECNState():
    Popen("sysctl -w net.ipv4.tcp_ecn=0", shell=True).wait()
 
 # Monitor the queue occupancy 
-def start_qmon(iface, interval_sec=0.5, outfile="q.txt"):
+def start_qmon(iface, interval_sec=0.1, outfile="q.txt"):
     monitor = Process(target=monitor_qlen,
                       args=(iface, interval_sec, outfile))
     monitor.start()
@@ -379,7 +426,7 @@ def dctcp():
 			enable_ecn=eecn,
 		    enable_red=args.red,
 		    red_params=red_settings,
-		    show_mininet_commands=0)
+		    show_mininet_commands=1)
     net = Mininet(topo=topo, host=CPULimitedHost, link=TCLink,
  		 autoPinCpus=True)
     net.start()
@@ -424,7 +471,7 @@ def dctcp():
     # If the experiment involves marking bandwidth for different threshold
     # then get the rate of the bottlenect link
     if(args.mark_threshold):
-        rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
+        rates = get_rxrates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
         #rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
         rates = rates[CALIBRATION_SKIP:]
         reference_rate = median(rates)
@@ -435,7 +482,7 @@ def dctcp():
                 myfile.write(str(reference_rate))
                 myfile.write("\n")
                 myfile.close()
-        rates = get_rates(iface='s0-eth2', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
+        rates = get_txrates(iface='s0-eth2', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
         #rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
         rates = rates[CALIBRATION_SKIP:]
         reference_rate = median(rates)
@@ -446,7 +493,7 @@ def dctcp():
                 myfile.write(str(reference_rate))
                 myfile.write("\n")
                 myfile.close()
-        rates = get_rates(iface='s0-eth3', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
+        rates = get_txrates(iface='s0-eth3', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
         #rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
         rates = rates[CALIBRATION_SKIP:]
         reference_rate = median(rates)
@@ -457,7 +504,7 @@ def dctcp():
                 myfile.write(str(reference_rate))
                 myfile.write("\n")
                 myfile.close()
-        rates = get_rates(iface='s0-eth4', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
+        rates = get_txrates(iface='s0-eth4', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
         #rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
         rates = rates[CALIBRATION_SKIP:]
         reference_rate = median(rates)
@@ -502,6 +549,7 @@ def dctcp():
     # Ensure that all processes you create within Mininet are killed.
     # Sometimes they require manual killing.
     Popen("pgrep -f webserver.py | xargs kill -9", shell=True).wait()
+    Popen("killall -9 iperf", shell=True).wait()
 
 if __name__ == "__main__":
     dctcp ()

@@ -16,7 +16,9 @@ for ((i=0; i<$n; i++)); do
             dctcp_src=$dir1/k$k-h$i-tos$j-ping.txt
             echo $k, |tr "\n" " " 
             pingavg=`awk -F '/' 'END {print $5}' "$dctcp_src"`
-            echo $pingavg
+            echo $pingavg, |tr "\n" " " 
+            percentloss=`grep -oP '\d+(?=% packet loss)'  "$dctcp_src"`
+            echo $percentloss
         done
     done
     echo ""

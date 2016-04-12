@@ -9,7 +9,7 @@ echo "------------------------------------------------------------------------"
 
 time=30
 bwnet=1000
-delay=1
+delay=0
 
 # Red settings (originated for DCTCP)
 dctcp_red_limit=1000000
