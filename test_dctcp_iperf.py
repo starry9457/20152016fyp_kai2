@@ -458,7 +458,7 @@ def dctcp():
                       outfile='%s/q4.txt' % (args.dir))
 
     # Start all the monitoring processes
-    start_tcpprobe("cwnd.txt")
+    #start_tcpprobe("cwnd.txt")
     # Run the experiment for the specified time
     start_time = time()
     while True:
@@ -516,31 +516,34 @@ def dctcp():
                 myfile.write("\n")
                 myfile.close()
 
-    # Wait for some while before the ping test.
+    # Wait for some while before the later part test.
     sleep(5)
     # ping test
     #net.getNodeByName('h0').popen("/bin/ping 10.0.0.2 -Q 2 -c %d -i %f >> %s/k%d-h1-ping.txt" % (args.ping, args.interval, args.dir, args.mark_threshold), shell=True)
     #h0 = net.getNodeByName('h0')
-    for i in xrange(args.hosts):
-        node_name = 'h%d' % (i)
-        node = net.getNodeByName(node_name)
-        nodeip = node.IP()
-        for j in xrange(4):
-            #net.getNodeByName(node_name).popen("/bin/ping 10.0.0.1 -Q %d -c %d -i %f >> %s/k%d-%s-tos%d-ping.txt" % (j, args.ping, args.interval, args.dir, args.mark_threshold, node_name, j), shell=True)            
-            net.getNodeByName('h0').popen("/bin/ping %s -Q %d -c %d -i %f >> %s/k%d-%s-tos%d-ping.txt" % (nodeip, j, args.ping, args.interval, args.dir, args.mark_threshold, node_name, j), shell=True)            
+    #for i in xrange(args.hosts):
+    #    node_name = 'h%d' % (i)
+    #    node = net.getNodeByName(node_name)
+    #    nodeip = node.IP()
+    #    for j in xrange(4):
+    #        #net.getNodeByName(node_name).popen("/bin/ping 10.0.0.1 -Q %d -c %d -i %f >> %s/k%d-%s-tos%d-ping.txt" % (j, args.ping, args.interval, args.dir, args.mark_threshold, node_name, j), shell=True)            
+    #        net.getNodeByName('h0').popen("/bin/ping %s -Q %d -c %d -i %f >> %s/k%d-%s-tos%d-ping.txt" % (nodeip, j, args.ping, args.interval, args.dir, args.mark_threshold, node_name, j), shell=True)            
     
+    #sleep_time = args.ping * args.interval
+    #sleep(sleep_time)
+
     # Queue buildup reproduction
     if (args.queuebuildup > 0):
         h1 = net.getNodeByName('h1')
         h1ip = h1.IP()
         # ./client [serIP] [serPort] [flowsize] [counts] [output]
         #net.getNodeByName('h1').popen("./client %s %d %d %d %s/%s" % (h0ip, args.qbport, args.qbsize, args.qbcount, args.dir, args.qbout), shell=True)
-        net.getNodeByName('h0').popen("./client %s %d %d %d >> %s/%s" % (h1ip, args.qbport, args.qbsize, args.qbcount, args.dir, args.qbout), shell=True)
+        net.getNodeByName('h0').popen("./client %s %d %d %d %d >> %s/%s" % (h1ip, args.qbport, args.qbsize, args.qbcount, args.qbinterval, args.dir, args.qbout), shell=True)
 
-    sleep_time = args.ping * args.interval
+    sleep_time = args.qbcount * (args.qbinterval + 0.01)
     sleep(sleep_time)
 
-    stop_tcpprobe()
+    #stop_tcpprobe()
     qmon1.terminate()
     qmon2.terminate()
     qmon3.terminate()

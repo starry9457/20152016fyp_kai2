@@ -7,9 +7,9 @@ echo "------------------------------------------------------------------------"
 echo "TCP/ECN Experiment"
 echo "------------------------------------------------------------------------"
 
-time=30
+time=15
 bwnet=100
-delay=0
+delay=1
 
 # Red settings (originated for DCTCP)
 dctcp_red_limit=1000000

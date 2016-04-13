@@ -18,7 +18,7 @@ for ((i=0; i<$n; i++)); do
             echo $k, |tr "\n" " " 
             pingavg=`awk -F '/' 'END {print $5}' "$tcpecn_src"`
             echo $pingavg, |tr "\n" " " 
-            percentloss=`grep -oP '\d+(?=% packet loss)'  "$dctcp_src"`
+            percentloss=`grep -oP '\d+(?=% packet loss)'  "$tcpecn_src"`
             echo $percentloss
         done
     done

@@ -7,9 +7,9 @@ echo "------------------------------------------------------------------------"
 echo "TCP/ECN Test Experiment for Queue Buildup"
 echo "------------------------------------------------------------------------"
 
-time=30
-bwnet=1000
-delay=0
+time=10
+bwnet=100
+delay=1
 
 # Red settings (originated for DCTCP)
 dctcp_red_limit=1000000
@@ -18,7 +18,7 @@ dctcp_red_burst=100
 dctcp_red_prob=1
 iperf_port=5001
 iperf=~/iperf-patched/src/iperf
-ks="3 5 8 15 20 30 40 60 80 100"
+ks="20"
 qsizes=200
 
 # Reproducing Queue buildup
