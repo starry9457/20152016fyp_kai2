@@ -553,6 +553,8 @@ def dctcp():
     # Sometimes they require manual killing.
     Popen("pgrep -f webserver.py | xargs kill -9", shell=True).wait()
     Popen("killall -9 iperf", shell=True).wait()
+    Popen("killall -9 server", shell=True).wait()
+    Popen("killall -9 client", shell=True).wait()
 
 if __name__ == "__main__":
     dctcp ()
