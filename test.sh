@@ -7,7 +7,7 @@ echo "------------------------------------------------------------------------"
 echo "DCTCP/TCPECN Basic Experiment"
 echo "------------------------------------------------------------------------"
 
-time=15
+time=30
 bwnet=100
 delay=1
 
@@ -128,6 +128,56 @@ for qsize in $qsizes; do
     done
 done
 
+echo ""
+echo "------------------------------------------------------------------------"
+echo "DCTCP/TCPECN Experiment - TCP"
+echo "------------------------------------------------------------------------"
+echo ""
+for qsize in $qsizes; do
+    mkdir tcpgraphs-q$qsize
+    tcpdirf=tcpgraphs-q$qsize
+    rm -rf tcpbb-q$qsize
+    for k in $ks; do
+        mkdir tcpbb-q$qsize-k$k
+        tcpdir1=tcpbb-q$qsize-k$k
+        echo ""
+        echo "------------------------------------------------------------------------"
+        echo "test.sh: Testing with k: $k, Queue Size: $qsize"
+        echo "------------------------------------------------------------------------"
+        tcp_red_min=`expr $k \\* $red_avpkt`
+        tcp_red_max=`expr $tcp_red_min + 1`
+        python dctcp.py --delay $delay -b $bwnet -B $bwnet -k $k -d $tcpdir1 --maxq $qsize -t $time \
+        --red_limit $red_limit \
+        --red_min $tcp_red_min \
+        --red_max $tcp_red_max \
+        --red_avpkt $red_avpkt \
+        --red_burst $red_burst \
+        --red_prob $red_prob \
+        --dctcp 0 \
+        --red 1 \
+        --ping $pingc \
+        --interval $pinginterval \
+        --ecn 0 \
+        --iperf $iperf -n $n
+
+        echo ""
+        echo "------------------------------------------------------------------------"
+        echo "test.sh: Generating graph of Queue Occupancy vs "
+        echo "Marking Threshold (K) "
+        echo "with k: $k, Queue Size: $qsize"
+        echo "------------------------------------------------------------------------"
+        python plot_queue.py -f $tcpdir1/q.txt -o $tcpdirf/tcp_queue_k$k.png
+
+        echo ""
+        echo "------------------------------------------------------------------------"
+        echo "test.sh: Combining the data of Marking Threshold (K), which will"
+        echo "be used to generate the graph Throughput vs Marking Threshold (K) later"
+        echo "with k: $k"
+        echo "------------------------------------------------------------------------"
+        cat $tcpdir1/k.txt >> $tcpdirf/k.txt
+    done
+done
+
 dctcpf=dctcpgraphs-q$qsize
 tcpecnf=tcpecngraphs-q$qsize
 
@@ -144,11 +194,11 @@ echo "------------------------------------------------------------------------"
 echo "Generating the graph of cwnd size comparison between DCTCP and TCP/ECN"
 echo "------------------------------------------------------------------------"
 for k in $ks; do
-    # cwnd graph. Actually not used in this experiment.
     dir1=dctcpbb-q$qsize-k$k
     dir2=tcpecnbb-q$qsize-k$k
     python plot_tcpprobe.py -f $dir1/cwnd.txt $dir2/cwnd.txt -o $dctcpf/cwnd-iperf-k$k.png -p $iperf_port
 done
+
 echo ""
 echo "------------------------------------------------------------------------"
 echo "Generating the graph of queue occupancy comparison between DCTCP and TCP/ECN"

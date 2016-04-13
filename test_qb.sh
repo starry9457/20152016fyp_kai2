@@ -7,7 +7,7 @@ echo "------------------------------------------------------------------------"
 echo "Queue Buildup Experiment"
 echo "------------------------------------------------------------------------"
 
-time=15
+time=30
 bwnet=1000
 delay=1
 
@@ -18,8 +18,8 @@ red_burst=100
 red_prob=1
 iperf_port=5001
 iperf=~/iperf-patched/src/iperf
-#ks="3 5 8 15 20 30 40 60 80 100"
-ks="20"
+ks="3 5 8 15 20 30 40 60 80 100"
+#ks="20"
 qsizes=200
 n=4                # Number of hosts
 
@@ -27,7 +27,7 @@ n=4                # Number of hosts
 qbport=50001        # Port
 qbsize=10           # Size for each request
 qbc=1000            # counts
-qbinterval=0.1      # interval
+qbinterval=0      # interval
 
 # Ping
 pingc=100           # counts
@@ -97,9 +97,10 @@ echo "test_qb.sh: Generating graph of Throughput vs Marking Threshold (K) "
 echo "------------------------------------------------------------------------"
 python plot_k_sweep_qb.py -f $dctcpdirf/k.txt -l Ksweep -o $dctcpdirf/k_sweep.png
 
+
 echo ""
 echo "------------------------------------------------------------------------"
-echo "Queue Buildup Experiment - TCPECN"
+echo "Queue Buildup Experiment - TCP/ECN"
 echo "------------------------------------------------------------------------"
 echo ""
 for qsize in $qsizes; do
@@ -153,6 +154,77 @@ for qsize in $qsizes; do
         cat $tcpecndir1/k.txt >> $tcpecndirf/k.txt
     done
 done
+
+echo ""
+echo "------------------------------------------------------------------------"
+echo "test_qb.sh: Generating graph of Throughput vs Marking Threshold (K) "
+echo "------------------------------------------------------------------------"
+python plot_k_sweep_qb.py -f $tcpecndirf/k.txt -l Ksweep -o $tcpecndirf/k_sweep.png
+
+
+echo ""
+echo "------------------------------------------------------------------------"
+echo "Queue Buildup Experiment - TCP"
+echo "------------------------------------------------------------------------"
+echo ""
+for qsize in $qsizes; do
+    mkdir qb-tcpgraphs-q$qsize
+    tcpdirf=qb-tcpgraphs-q$qsize
+    rm -rf qb-tcpbb-q$qsize
+    for k in $ks; do
+        mkdir qb-tcpbb-q$qsize-k$k
+        tcpdir1=qb-tcpbb-q$qsize-k$k
+        qbout=tcp-qb-k$k-qbs$qbsize-c$qbc.txt
+        echo ""
+        echo "------------------------------------------------------------------------"
+        echo "test_qb.sh: Testing with k: $k, Queue Size: $qsize"
+        echo "------------------------------------------------------------------------"
+        tcp_red_min=`expr $k \\* $red_avpkt`
+        tcp_red_max=`expr $tcp_red_min + 1`
+        python test_dctcp_iperf.py --delay $delay -b $bwnet -B $bwnet -k $k -d $tcpdir1 --maxq $qsize -t $time \
+        --red_limit $red_limit \
+        --red_min $tcp_red_min \
+        --red_max $tcp_red_max \
+        --red_avpkt $red_avpkt \
+        --red_burst $red_burst \
+        --red_prob $red_prob \
+        --dctcp 0 \
+        --red 1 \
+        --ping $pingc \
+        --interval $pinginterval \
+        --ecn 0 \
+        --qbport $qbport \
+        --qbsize $qbsize \
+        --qbcount $qbc \
+        --qbinterval $qbinterval \
+        --qbout $qbout \
+        -qb 1 \
+        --iperf $iperf -n $n
+
+        echo ""
+        echo "------------------------------------------------------------------------"
+        echo "test_qb.sh: Generating graph of Queue Occupancy vs "
+        echo "Marking Threshold (K) "
+        echo "with k: $k, Queue Size: $qsize"
+        echo "------------------------------------------------------------------------"
+        python plot_queue.py -f $tcpdir1/q.txt -o $tcpdirf/tcp_queue_k$k.png
+
+        echo ""
+        echo "------------------------------------------------------------------------"
+        echo "test_qb.sh: Combining the data of Marking Threshold (K), which will"
+        echo "be used to generate the graph Throughput vs Marking Threshold (K) later"
+        echo "with k: $k"
+        echo "------------------------------------------------------------------------"
+        cat $tcpdir1/k.txt >> $tcpdirf/k.txt
+    done
+done
+
+echo ""
+echo "------------------------------------------------------------------------"
+echo "test_qb.sh: Generating graph of Throughput vs Marking Threshold (K) "
+echo "------------------------------------------------------------------------"
+python plot_k_sweep_qb.py -f $tcpdirf/k.txt -l Ksweep -o $tcpdirf/k_sweep.png
+
 
 dctcpf=qb-dctcpgraphs-q$qsize
 tcpecnf=qb-tcpecngraphs-q$qsize
