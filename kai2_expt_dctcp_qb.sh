@@ -68,10 +68,10 @@ for qsize in $qsizes; do
         echo "Marking Threshold (K) "
         echo "with k: $k, Queue Size: $qsize"
         echo "------------------------------------------------------------------------"
-        python plot_queue.py -f $dir1/q1.txt -o $dirf/dctcp_queue_k$k_q1.png
-        python plot_queue.py -f $dir1/q2.txt -o $dirf/dctcp_queue_k$k_q2.png
-        python plot_queue.py -f $dir1/q3.txt -o $dirf/dctcp_queue_k$k_q3.png
-        python plot_queue.py -f $dir1/q4.txt -o $dirf/dctcp_queue_k$k_q4.png
+        python plot_queue.py -f $dir1/q1.txt -o $dirf/dctcp_queue_k$k-q1.png
+        python plot_queue.py -f $dir1/q2.txt -o $dirf/dctcp_queue_k$k-q2.png
+        python plot_queue.py -f $dir1/q3.txt -o $dirf/dctcp_queue_k$k-q3.png
+        python plot_queue.py -f $dir1/q4.txt -o $dirf/dctcp_queue_k$k-q4.png
 
         echo ""
         echo "------------------------------------------------------------------------"
@@ -90,9 +90,9 @@ echo ""
 echo "------------------------------------------------------------------------"
 echo "kai2_expt_dctcp_qb.sh: Generating graph of Throughput vs Marking Threshold (K) "
 echo "------------------------------------------------------------------------"
-python plot_k_sweep_qb.py -f $dirf/k1.txt -l Ksweep -o $dirf/k1_sweep.png
-python plot_k_sweep_qb.py -f $dirf/k2.txt -l Ksweep -o $dirf/k2_sweep.png
-python plot_k_sweep_qb.py -f $dirf/k3.txt -l Ksweep -o $dirf/k3_sweep.png
-python plot_k_sweep_qb.py -f $dirf/k4.txt -l Ksweep -o $dirf/k4_sweep.png
+python plot_k_sweep.py -f $dirf/k1.txt -l Ksweep -o $dirf/k1_sweep.png
+python plot_k_sweep.py -f $dirf/k2.txt -l Ksweep -o $dirf/k2_sweep.png
+python plot_k_sweep.py -f $dirf/k3.txt -l Ksweep -o $dirf/k3_sweep.png
+python plot_k_sweep.py -f $dirf/k4.txt -l Ksweep -o $dirf/k4_sweep.png
 
 #rm -rf $dir1       # Keep the files remained for analysis

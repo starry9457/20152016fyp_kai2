@@ -540,7 +540,7 @@ def dctcp():
         #net.getNodeByName('h1').popen("./client %s %d %d %d %s/%s" % (h0ip, args.qbport, args.qbsize, args.qbcount, args.dir, args.qbout), shell=True)
         net.getNodeByName('h0').popen("./client %s %d %d %d %d >> %s/%s" % (h1ip, args.qbport, args.qbsize, args.qbcount, args.qbinterval, args.dir, args.qbout), shell=True)
 
-    sleep_time = args.qbcount * (args.qbinterval + 0.01)
+    sleep_time = args.qbcount * (args.qbinterval + 0.2)
     sleep(sleep_time)
 
     #stop_tcpprobe()
