@@ -7,9 +7,9 @@ echo "------------------------------------------------------------------------"
 echo "Queue Buildup Experiment"
 echo "------------------------------------------------------------------------"
 
-time=30
+time=80
 bwnet=1000
-delay=1
+delay=0.5
 
 # Red settings (originated for DCTCP)
 red_limit=1000000
@@ -79,7 +79,10 @@ for qsize in $qsizes; do
         echo "Marking Threshold (K) "
         echo "with k: $k, Queue Size: $qsize"
         echo "------------------------------------------------------------------------"
-        python plot_queue.py -f $dctcpdir1/q.txt -o $dctcpdirf/dctcp_queue_k$k.png
+        python plot_queue.py -f $dctcpdir1/q1.txt -o $dctcpdirf/dctcp_queue_k$k-q1.png
+        python plot_queue.py -f $dctcpdir1/q2.txt -o $dctcpdirf/dctcp_queue_k$k-q2.png
+        python plot_queue.py -f $dctcpdir1/q3.txt -o $dctcpdirf/dctcp_queue_k$k-q3.png
+        python plot_queue.py -f $dctcpdir1/q4.txt -o $dctcpdirf/dctcp_queue_k$k-q4.png
 
         echo ""
         echo "------------------------------------------------------------------------"
@@ -87,7 +90,10 @@ for qsize in $qsizes; do
         echo "be used to generate the graph Throughput vs Marking Threshold (K) later"
         echo "with k: $k"
         echo "------------------------------------------------------------------------"
-        cat $dctcpdir1/k.txt >> $dctcpdirf/k.txt
+        cat $dctcpdir1/k1.txt >> $dctcpdirf/k1.txt
+        cat $dctcpdir1/k2.txt >> $dctcpdirf/k2.txt
+        cat $dctcpdir1/k3.txt >> $dctcpdirf/k3.txt
+        cat $dctcpdir1/k4.txt >> $dctcpdirf/k4.txt
     done
 done
 
@@ -95,7 +101,10 @@ echo ""
 echo "------------------------------------------------------------------------"
 echo "test_qb.sh: Generating graph of Throughput vs Marking Threshold (K) "
 echo "------------------------------------------------------------------------"
-python plot_k_sweep_qb.py -f $dctcpdirf/k.txt -l Ksweep -o $dctcpdirf/k_sweep.png
+python plot_k_sweep_qb.py -f $dctcpdirf/k1.txt -l Ksweep -o $dctcpdirf/k1_sweep.png
+python plot_k_sweep_qb.py -f $dctcpdirf/k2.txt -l Ksweep -o $dctcpdirf/k2_sweep.png
+python plot_k_sweep_qb.py -f $dctcpdirf/k3.txt -l Ksweep -o $dctcpdirf/k3_sweep.png
+python plot_k_sweep_qb.py -f $dctcpdirf/k4.txt -l Ksweep -o $dctcpdirf/k4_sweep.png
 
 
 echo ""
@@ -143,7 +152,10 @@ for qsize in $qsizes; do
         echo "Marking Threshold (K) "
         echo "with k: $k, Queue Size: $qsize"
         echo "------------------------------------------------------------------------"
-        python plot_queue.py -f $tcpecndir1/q.txt -o $tcpecndirf/tcpecn_queue_k$k.png
+        python plot_queue.py -f $tcpecndir1/q1.txt -o $tcpecndirf/tcpecn_queue_k$k-q1.png
+        python plot_queue.py -f $tcpecndir1/q2.txt -o $tcpecndirf/tcpecn_queue_k$k-q2.png
+        python plot_queue.py -f $tcpecndir1/q3.txt -o $tcpecndirf/tcpecn_queue_k$k-q3.png
+        python plot_queue.py -f $tcpecndir1/q4.txt -o $tcpecndirf/tcpecn_queue_k$k-q4.png
 
         echo ""
         echo "------------------------------------------------------------------------"
@@ -151,7 +163,10 @@ for qsize in $qsizes; do
         echo "be used to generate the graph Throughput vs Marking Threshold (K) later"
         echo "with k: $k"
         echo "------------------------------------------------------------------------"
-        cat $tcpecndir1/k.txt >> $tcpecndirf/k.txt
+        cat $tcpecndir1/k1.txt >> $tcpecndirf/k1.txt
+        cat $tcpecndir1/k2.txt >> $tcpecndirf/k2.txt
+        cat $tcpecndir1/k3.txt >> $tcpecndirf/k3.txt
+        cat $tcpecndir1/k4.txt >> $tcpecndirf/k4.txt
     done
 done
 
@@ -159,7 +174,10 @@ echo ""
 echo "------------------------------------------------------------------------"
 echo "test_qb.sh: Generating graph of Throughput vs Marking Threshold (K) "
 echo "------------------------------------------------------------------------"
-python plot_k_sweep_qb.py -f $tcpecndirf/k.txt -l Ksweep -o $tcpecndirf/k_sweep.png
+python plot_k_sweep_qb.py -f $tcpecndirf/k1.txt -l Ksweep -o $tcpecndirf/k1_sweep.png
+python plot_k_sweep_qb.py -f $tcpecndirf/k2.txt -l Ksweep -o $tcpecndirf/k2_sweep.png
+python plot_k_sweep_qb.py -f $tcpecndirf/k3.txt -l Ksweep -o $tcpecndirf/k3_sweep.png
+python plot_k_sweep_qb.py -f $tcpecndirf/k4.txt -l Ksweep -o $tcpecndirf/k4_sweep.png
 
 
 echo ""
@@ -207,7 +225,10 @@ for qsize in $qsizes; do
         echo "Marking Threshold (K) "
         echo "with k: $k, Queue Size: $qsize"
         echo "------------------------------------------------------------------------"
-        python plot_queue.py -f $tcpdir1/q.txt -o $tcpdirf/tcp_queue_k$k.png
+        python plot_queue.py -f $tcpdir1/q1.txt -o $tcpdirf/tcp_queue_k$k-q1.png
+        python plot_queue.py -f $tcpdir1/q2.txt -o $tcpdirf/tcp_queue_k$k-q2.png
+        python plot_queue.py -f $tcpdir1/q3.txt -o $tcpdirf/tcp_queue_k$k-q3.png
+        python plot_queue.py -f $tcpdir1/q4.txt -o $tcpdirf/tcp_queue_k$k-q4.png
 
         echo ""
         echo "------------------------------------------------------------------------"
@@ -215,7 +236,10 @@ for qsize in $qsizes; do
         echo "be used to generate the graph Throughput vs Marking Threshold (K) later"
         echo "with k: $k"
         echo "------------------------------------------------------------------------"
-        cat $tcpdir1/k.txt >> $tcpdirf/k.txt
+        cat $tcpdir1/k1.txt >> $tcpdirf/k1.txt
+        cat $tcpdir1/k2.txt >> $tcpdirf/k2.txt
+        cat $tcpdir1/k3.txt >> $tcpdirf/k3.txt
+        cat $tcpdir1/k4.txt >> $tcpdirf/k4.txt
     done
 done
 
@@ -223,30 +247,33 @@ echo ""
 echo "------------------------------------------------------------------------"
 echo "test_qb.sh: Generating graph of Throughput vs Marking Threshold (K) "
 echo "------------------------------------------------------------------------"
-python plot_k_sweep_qb.py -f $tcpdirf/k.txt -l Ksweep -o $tcpdirf/k_sweep.png
+python plot_k_sweep_qb.py -f $tcpdirf/k1.txt -l Ksweep -o $tcpdirf/k1_sweep.png
+python plot_k_sweep_qb.py -f $tcpdirf/k2.txt -l Ksweep -o $tcpdirf/k2_sweep.png
+python plot_k_sweep_qb.py -f $tcpdirf/k3.txt -l Ksweep -o $tcpdirf/k3_sweep.png
+python plot_k_sweep_qb.py -f $tcpdirf/k4.txt -l Ksweep -o $tcpdirf/k4_sweep.png
 
 
 dctcpf=qb-dctcpgraphs-q$qsize
 tcpecnf=qb-tcpecngraphs-q$qsize
 
-# echo ""
-# echo "------------------------------------------------------------------------"
-# echo "Processing data to get average ping in different tests, result will be"
-# echo "put inside $dctcpf and $tcpecnf"
-# echo "------------------------------------------------------------------------"
-# ./tcpecn_pingavg_qb.sh | tee $tcpecnf/ping-avg.txt
-# ./dctcp_pingavg_qb.sh | tee $dctcpf/ping-avg.txt
+echo ""
+echo "------------------------------------------------------------------------"
+echo "Processing data to get average ping in different tests, result will be"
+echo "put inside $dctcpf and $tcpecnf"
+echo "------------------------------------------------------------------------"
+./tcpecn_pingavg_qb.sh | tee $tcpecnf/ping-avg.txt
+./dctcp_pingavg_qb.sh | tee $dctcpf/ping-avg.txt
 
-#echo ""
-#echo "------------------------------------------------------------------------"
-#echo "Generating the graph of cwnd size comparison between DCTCP and TCP/ECN"
-#echo "------------------------------------------------------------------------"
-#for k in $ks; do
-#    # cwnd graph. Actually not used in this experiment.
-#    dir1=qb-dctcpbb-q$qsize-k$k
-#    dir2=qb-tcpecnbb-q$qsize-k$k
-#    python plot_tcpprobe.py -f $dir1/cwnd.txt $dir2/cwnd.txt -o $dctcpf/cwnd-iperf-k$k.png -p $iperf_port
-#done
+echo ""
+echo "------------------------------------------------------------------------"
+echo "Generating the graph of cwnd size comparison between DCTCP and TCP/ECN"
+echo "------------------------------------------------------------------------"
+for k in $ks; do
+    # cwnd graph. Actually not used in this experiment.
+    dir1=qb-dctcpbb-q$qsize-k$k
+    dir2=qb-tcpecnbb-q$qsize-k$k
+    python plot_tcpprobe.py -f $dir1/cwnd.txt $dir2/cwnd.txt -o $dctcpf/cwnd-iperf-k$k.png -p $iperf_port
+done
 
 echo ""
 echo "------------------------------------------------------------------------"
@@ -255,7 +282,10 @@ echo "------------------------------------------------------------------------"
 for k in $ks; do
     dir1=qb-dctcpbb-q$qsize-k$k
     dir2=qb-tcpecnbb-q$qsize-k$k
-    python plot_queue.py -f $dir1/q.txt $dir2/q.txt --legend dctcp tcpecn -o $dctcpf/dctcp-tcpecn-queue-k$k.png
+    python plot_queue.py -f $dir1/q1.txt $dir2/q1.txt --legend dctcp tcpecn -o $dctcpf/dctcp-tcpecn-queue-k$k-q1.png
+    python plot_queue.py -f $dir1/q2.txt $dir2/q2.txt --legend dctcp tcpecn -o $dctcpf/dctcp-tcpecn-queue-k$k-q2.png
+    python plot_queue.py -f $dir1/q3.txt $dir2/q3.txt --legend dctcp tcpecn -o $dctcpf/dctcp-tcpecn-queue-k$k-q3.png
+    python plot_queue.py -f $dir1/q4.txt $dir2/q4.txt --legend dctcp tcpecn -o $dctcpf/dctcp-tcpecn-queue-k$k-q4.png
 done
 
 echo ""
@@ -263,4 +293,7 @@ echo "------------------------------------------------------------------------"
 echo "Generating graph of Throughput vs Marking Threshold (K) comparison"
 echo "between DCTCP and TCP/ECN"
 echo "------------------------------------------------------------------------"
-python plot_k_sweep_qb.py -f $dctcpf/k.txt $tcpecnf/k.txt -l dctcp tcpecn -o $dctcpf/k_sweep_comparison.png
+python plot_k_sweep_qb.py -f $dctcpf/k1.txt $tcpecnf/k1.txt -l dctcp tcpecn -o $dctcpf/k1_sweep_comparison.png
+python plot_k_sweep_qb.py -f $dctcpf/k2.txt $tcpecnf/k2.txt -l dctcp tcpecn -o $dctcpf/k2_sweep_comparison.png
+python plot_k_sweep_qb.py -f $dctcpf/k3.txt $tcpecnf/k3.txt -l dctcp tcpecn -o $dctcpf/k3_sweep_comparison.png
+python plot_k_sweep_qb.py -f $dctcpf/k4.txt $tcpecnf/k4.txt -l dctcp tcpecn -o $dctcpf/k4_sweep_comparison.png
