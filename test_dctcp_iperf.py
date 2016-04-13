@@ -349,7 +349,7 @@ def start_sender_receiver(net):
 
     # first server.
     h1 = net.getNodeByName('h1')
-    print "Starting iperf server at h1 (short flows)"
+    print "Starting server at h1 (short flows)"
     #server1 = h1.popen("%s -s -w 16m" % CUSTOM_IPERF_PATH)
     h1.popen("./server %d" % args.qbport)
 
@@ -540,7 +540,7 @@ def dctcp():
         #net.getNodeByName('h1').popen("./client %s %d %d %d %s/%s" % (h0ip, args.qbport, args.qbsize, args.qbcount, args.dir, args.qbout), shell=True)
         net.getNodeByName('h0').popen("./client %s %d %d %d %d >> %s/%s" % (h1ip, args.qbport, args.qbsize, args.qbcount, args.qbinterval, args.dir, args.qbout), shell=True)
 
-    sleep_time = args.qbcount * (args.qbinterval + 0.2)
+    sleep_time = (args.qbcount * args.qbinterval) + (args.qbcount / 10)
     sleep(sleep_time)
 
     #stop_tcpprobe()
