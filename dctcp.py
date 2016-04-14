@@ -26,10 +26,10 @@ import math
 CALIBRATION_SKIP = 20
 
 # Number of samples to grab for reference util calibration.
-CALIBRATION_SAMPLES = 10
+CALIBRATION_SAMPLES = 100
 
 # Number of samples to take in get_rates() before returning.
-NSAMPLES = 40
+NSAMPLES = 120
 
 # Time to wait between samples, in seconds, as a float.
 SAMPLE_PERIOD_SEC = 0.5

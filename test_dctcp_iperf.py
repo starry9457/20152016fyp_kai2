@@ -26,10 +26,10 @@ import math
 CALIBRATION_SKIP = 20
 
 # Number of samples to grab for reference util calibration.
-CALIBRATION_SAMPLES = 10
+CALIBRATION_SAMPLES = 100
 
 # Number of samples to take in get_rates() before returning.
-NSAMPLES = 40
+NSAMPLES = 120
 
 # Time to wait between samples, in seconds, as a float.
 SAMPLE_PERIOD_SEC = 0.5
@@ -472,7 +472,6 @@ def dctcp():
     # then get the rate of the bottlenect link
     if(args.mark_threshold):
         rates = get_rxrates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
-        #rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
         rates = rates[CALIBRATION_SKIP:]
         reference_rate = median(rates)
         # if (reference_rate > 0):                          # Starry: Original is 20, but why?
@@ -483,7 +482,6 @@ def dctcp():
                 myfile.write("\n")
                 myfile.close()
         rates = get_txrates(iface='s0-eth2', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
-        #rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
         rates = rates[CALIBRATION_SKIP:]
         reference_rate = median(rates)
         # if (reference_rate > 0):                          # Starry: Original is 20, but why?
@@ -494,7 +492,6 @@ def dctcp():
                 myfile.write("\n")
                 myfile.close()
         rates = get_txrates(iface='s0-eth3', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
-        #rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
         rates = rates[CALIBRATION_SKIP:]
         reference_rate = median(rates)
         # if (reference_rate > 0):                          # Starry: Original is 20, but why?
@@ -505,7 +502,6 @@ def dctcp():
                 myfile.write("\n")
                 myfile.close()
         rates = get_txrates(iface='s0-eth4', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
-        #rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
         rates = rates[CALIBRATION_SKIP:]
         reference_rate = median(rates)
         # if (reference_rate > 0):                          # Starry: Original is 20, but why?
@@ -519,7 +515,7 @@ def dctcp():
     # Wait for some while before the later part test.
     sleep(5)
     # ping test
-    net.getNodeByName('h0').popen("/bin/ping 10.0.0.2 -Q 2 -c %d -i %f >> %s/k%d-h1-ping.txt" % (args.ping, args.interval, args.dir, args.mark_threshold), shell=True)
+    #net.getNodeByName('h0').popen("/bin/ping 10.0.0.2 -Q 2 -c %d -i %f >> %s/k%d-h1-ping.txt" % (args.ping, args.interval, args.dir, args.mark_threshold), shell=True)
     h0 = net.getNodeByName('h0')
     for i in xrange(args.hosts):
         node_name = 'h%d' % (i)
