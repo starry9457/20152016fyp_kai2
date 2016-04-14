@@ -318,8 +318,8 @@ for k in $ks; do
     dir1=qb-dctcpbb-q$qsize-k$k
     dir2=qb-tcpecnbb-q$qsize-k$k
     dir3=qb-tcpbb-q$qsize-k$k
-    python plot_cdf.py -f $dir1/q1.txt $dir2/q1.txt $dir3/q1.txt -l dctcp-host$n-k$k tcpecn-host$n-k$k tcp-host$n-k$k -o $graph/cdf_flows_k$k-q1.png
-    python plot_cdf.py -f $dir1/q2.txt $dir2/q2.txt $dir3/q2.txt -l dctcp-host$n-k$k tcpecn-host$n-k$k tcp-host$n-k$k -o $graph/cdf_flows_k$k-q2.png
-    python plot_cdf.py -f $dir1/q3.txt $dir2/q3.txt $dir3/q3.txt -l dctcp-host$n-k$k tcpecn-host$n-k$k tcp-host$n-k$k -o $graph/cdf_flows_k$k-q3.png
-    python plot_cdf.py -f $dir1/q4.txt $dir2/q4.txt $dir3/q4.txt -l dctcp-host$n-k$k tcpecn-host$n-k$k tcp-host$n-k$k -o $graph/cdf_flows_k$k-q4.png
+    python plot_cdf.py -f $dir1/q1.txt $dir2/q1.txt $dir3/q1.txt -l dctcp-host$n-k$k tcpecn-host$n-k$k tcp-host$n-k$k -o $graphf/cdf_flows_k$k-q1.png
+    python plot_cdf.py -f $dir1/q2.txt $dir2/q2.txt $dir3/q2.txt -l dctcp-host$n-k$k tcpecn-host$n-k$k tcp-host$n-k$k -o $graphf/cdf_flows_k$k-q2.png
+    python plot_cdf.py -f $dir1/q3.txt $dir2/q3.txt $dir3/q3.txt -l dctcp-host$n-k$k tcpecn-host$n-k$k tcp-host$n-k$k -o $graphf/cdf_flows_k$k-q3.png
+    python plot_cdf.py -f $dir1/q4.txt $dir2/q4.txt $dir3/q4.txt -l dctcp-host$n-k$k tcpecn-host$n-k$k tcp-host$n-k$k -o $graphf/cdf_flows_k$k-q4.png
 done

@@ -176,6 +176,7 @@ dctcpf=dctcpgraphs-q$qsize
 tcpecnf=tcpecngraphs-q$qsize
 tcpf=tcpgraphs-q$qsize
 graphf=graphs-q$qsize
+mkdir graphs-q$qsize
 
 echo ""
 echo "------------------------------------------------------------------------"
@@ -216,8 +217,8 @@ echo "------------------------------------------------------------------------"
 echo "Generating graph of Throughput vs Marking Threshold (K) comparison"
 echo "between DCTCP and TCP/ECN and TCP"
 echo "------------------------------------------------------------------------"
-python plot_k_sweep.py -f $dctcpf/k.txt $tcpecnf/k.txt -l dctcp tcpecn -o $dctcpf/k_sweep_comparison.png
-python plot_k_sweep.py -f $dctcpf/k.txt $tcpecnf/k.txt $tcpf/k.txt -l dctcp tcpecn tcp -o $dctcpf/k_sweep_comparison_full.png
+python plot_k_sweep.py -f $dctcpf/k.txt $tcpecnf/k.txt -l dctcp tcpecn -o graphf/k_sweep_comparison.png
+python plot_k_sweep.py -f $dctcpf/k.txt $tcpecnf/k.txt $tcpf/k.txt -l dctcp tcpecn tcp -o $graphf/k_sweep_comparison_full.png
 
 echo ""
 echo "------------------------------------------------------------------------"
@@ -227,5 +228,5 @@ for k in $ks; do
     dir1=dctcpbb-q$qsize-k$k
     dir2=tcpecnbb-q$qsize-k$k
     dir3=tcpbb-q$qsize-k$k
-    python plot_cdf.py -f $dir1/q.txt $dir2/q.txt $dir3/q.txt -l dctcp-host$n-k$k tcpecn-host$n-k$k tcp-host$n-k$k -o $graph/cdf_flows_k$k-q.png
+    python plot_cdf.py -f $dir1/q.txt $dir2/q.txt $dir3/q.txt -l dctcp-host$n-k$k tcpecn-host$n-k$k tcp-host$n-k$k -o $graphf/cdf_flows_k$k-q.png
 done

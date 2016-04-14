@@ -386,6 +386,7 @@ def dctcp():
     # Ensure that all processes you create within Mininet are killed.
     # Sometimes they require manual killing.
     Popen("pgrep -f webserver.py | xargs kill -9", shell=True).wait()
+    Popen("killall -9 iperf", shell=True).wait()
 
 if __name__ == "__main__":
     dctcp ()
