@@ -25,7 +25,7 @@ n=3                # Number of hosts
 
 # Ping
 pingc=100           # counts
-pinginterval=0.3    # interval
+pinginterval=0.1    # interval
 
 echo ""
 echo "------------------------------------------------------------------------"

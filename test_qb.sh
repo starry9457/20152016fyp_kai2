@@ -7,9 +7,9 @@ echo "------------------------------------------------------------------------"
 echo "Queue Buildup Experiment"
 echo "------------------------------------------------------------------------"
 
-time=80
+time=30
 bwnet=1000
-delay=0.5
+delay=1
 
 # Red settings (originated for DCTCP)
 red_limit=1000000
@@ -31,7 +31,7 @@ qbinterval=0        # interval
 
 # Ping
 pingc=100           # counts
-pinginterval=0.3    # interval
+pinginterval=0.1    # interval
 
 echo ""
 echo "------------------------------------------------------------------------"

@@ -32,7 +32,7 @@ CALIBRATION_SAMPLES = 100
 NSAMPLES = 120
 
 # Time to wait between samples, in seconds, as a float.
-SAMPLE_PERIOD_SEC = 0.5
+SAMPLE_PERIOD_SEC = 0.1
 
 # Time to wait for first sample, in seconds, as a float.
 SAMPLE_WAIT_SEC = 3.0
