@@ -426,7 +426,7 @@ def dctcp():
 			enable_ecn=eecn,
 		    enable_red=args.red,
 		    red_params=red_settings,
-		    show_mininet_commands=1)
+		    show_mininet_commands=0)
     net = Mininet(topo=topo, host=CPULimitedHost, link=TCLink,
  		 autoPinCpus=True)
     net.start()
