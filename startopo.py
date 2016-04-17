@@ -57,10 +57,10 @@ class StarTopo(Topo):
         lconfig_sender = {'bw': self.bw_host, 'delay': self.delay,
                           'max_queue_size': self.maxq,
                           'show_commands': self.show_mininet_commands}
-        lconfig_receiver = {'bw': self.bw_net, 'delay': self.delay,
+        lconfig_receiver = {'bw': self.bw_net, 'delay': 0,
                             'max_queue_size': self.maxq,
                             'show_commands': self.show_mininet_commands}                            
-        lconfig_switch = {'bw': self.bw_net, 'delay': self.delay,
+        lconfig_switch = {'bw': self.bw_net, 'delay': 0,
                             'max_queue_size': self.maxq,
                             'enable_ecn': self.enable_ecn,
                             'enable_red': 1 if self.enable_red else 0,
