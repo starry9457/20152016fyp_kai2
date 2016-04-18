@@ -26,13 +26,13 @@ import math
 CALIBRATION_SKIP = 20
 
 # Number of samples to grab for reference util calibration.
-CALIBRATION_SAMPLES = 10
+CALIBRATION_SAMPLES = 100
 
 # Number of samples to take in get_rates() before returning.
-NSAMPLES = 40
+NSAMPLES = 120
 
 # Time to wait between samples, in seconds, as a float.
-SAMPLE_PERIOD_SEC = 0.5
+SAMPLE_PERIOD_SEC = 0.1
 
 # Time to wait for first sample, in seconds, as a float.
 SAMPLE_WAIT_SEC = 3.0
@@ -320,7 +320,7 @@ def dctcp():
 			enable_ecn=eecn,
 		    enable_red=args.red,
 		    red_params=red_settings,
-		    show_mininet_commands=0)
+		    show_mininet_commands=1)
     net = Mininet(topo=topo, host=CPULimitedHost, link=TCLink,
  		 autoPinCpus=True)
     net.start()
@@ -386,6 +386,7 @@ def dctcp():
     # Ensure that all processes you create within Mininet are killed.
     # Sometimes they require manual killing.
     Popen("pgrep -f webserver.py | xargs kill -9", shell=True).wait()
+    Popen("killall -9 iperf", shell=True).wait()
 
 if __name__ == "__main__":
     dctcp ()
