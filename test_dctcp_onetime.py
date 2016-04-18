@@ -493,6 +493,9 @@ def dctcp():
         #net.getNodeByName('h1').popen("./client %s %d %d %d %s/%s" % (h0ip, args.qbport, args.qbsize, args.qbcount, args.dir, args.qbout), shell=True)
         net.getNodeByName('h0').popen("./client %s %d %d %d %d >> %s/dctcp%s" % (h1ip, args.qbport, args.qbsize, args.qbcount, args.qbinterval, args.dir, args.qbout), shell=True)
 
+    sleep_time = (args.qbcount / 10) + (args.qbcount * args.qbinterval)
+    sleep(sleep_time)
+    
     # Queue buildup reproduction - TCP/ECN
     if (args.queuebuildup > 0):
         ResetDCTCPState()
@@ -503,6 +506,9 @@ def dctcp():
         #net.getNodeByName('h1').popen("./client %s %d %d %d %s/%s" % (h0ip, args.qbport, args.qbsize, args.qbcount, args.dir, args.qbout), shell=True)
         net.getNodeByName('h0').popen("./client %s %d %d %d %d >> %s/tcpecn%s" % (h1ip, args.qbport, args.qbsize, args.qbcount, args.qbinterval, args.dir, args.qbout), shell=True)
 
+    sleep_time = (args.qbcount / 10) + (args.qbcount * args.qbinterval)
+    sleep(sleep_time)
+    
     # Queue buildup reproduction - TCP
     if (args.queuebuildup > 0):
         ResetDCTCPState()
