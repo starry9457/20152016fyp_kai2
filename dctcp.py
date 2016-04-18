@@ -342,7 +342,7 @@ def dctcp():
     sleep(20)
 
     # Start monitoring the queue sizes.
-    qmon = start_qmon(iface='s0-eth1',
+    qmon = start_qmon(iface='s0-eth1', interval_sec=0.1,
                       outfile='%s/q.txt' % (args.dir))
 
     # Start all the monitoring processes
