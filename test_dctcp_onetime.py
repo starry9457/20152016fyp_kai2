@@ -474,24 +474,44 @@ def dctcp():
     # ping test
     #net.getNodeByName('h0').popen("/bin/ping 10.0.0.2 -Q 2 -c %d -i %f >> %s/k%d-h1-ping.txt" % (args.ping, args.interval, args.dir, args.mark_threshold), shell=True)
     #h0 = net.getNodeByName('h0')
-    for i in xrange(args.hosts):
-        node_name = 'h%d' % (i)
-        node = net.getNodeByName(node_name)
-        nodeip = node.IP()
-        for j in xrange(4):
-            #net.getNodeByName(node_name).popen("/bin/ping 10.0.0.1 -Q %d -c %d -i %f >> %s/k%d-%s-tos%d-ping.txt" % (j, args.ping, args.interval, args.dir, args.mark_threshold, node_name, j), shell=True)            
-            net.getNodeByName('h0').popen("/bin/ping %s -Q %d -c %d -i %f >> %s/k%d-%s-tos%d-ping.txt" % (nodeip, j, args.ping, args.interval, args.dir, args.mark_threshold, node_name, j), shell=True)            
+    #for i in xrange(args.hosts):
+    #    node_name = 'h%d' % (i)
+    #    node = net.getNodeByName(node_name)
+    #    nodeip = node.IP()
+    #    for j in xrange(4):
+    #        #net.getNodeByName(node_name).popen("/bin/ping 10.0.0.1 -Q %d -c %d -i %f >> %s/k%d-%s-tos%d-ping.txt" % (j, args.ping, args.interval, args.dir, args.mark_threshold, node_name, j), shell=True)            
+    #        net.getNodeByName('h0').popen("/bin/ping %s -Q %d -c %d -i %f >> %s/k%d-%s-tos%d-ping.txt" % (nodeip, j, args.ping, args.interval, args.dir, args.mark_threshold, node_name, j), shell=True)            
     
-    sleep_time = args.ping * args.interval
-    sleep(sleep_time)
+    #sleep_time = args.ping * args.interval
+    #sleep(sleep_time)
     
-    # Queue buildup reproduction
+    # Queue buildup reproduction - DCTCP
     if (args.queuebuildup > 0):
         h1 = net.getNodeByName('h1')
         h1ip = h1.IP()
         # ./client [serIP] [serPort] [flowsize] [counts] [output]
         #net.getNodeByName('h1').popen("./client %s %d %d %d %s/%s" % (h0ip, args.qbport, args.qbsize, args.qbcount, args.dir, args.qbout), shell=True)
-        net.getNodeByName('h0').popen("./client %s %d %d %d %d >> %s/%s" % (h1ip, args.qbport, args.qbsize, args.qbcount, args.qbinterval, args.dir, args.qbout), shell=True)
+        net.getNodeByName('h0').popen("./client %s %d %d %d %d >> %s/dctcp%s" % (h1ip, args.qbport, args.qbsize, args.qbcount, args.qbinterval, args.dir, args.qbout), shell=True)
+
+    # Queue buildup reproduction - TCP/ECN
+    if (args.queuebuildup > 0):
+        ResetDCTCPState()
+        SetECNState2()
+        h1 = net.getNodeByName('h1')
+        h1ip = h1.IP()
+        # ./client [serIP] [serPort] [flowsize] [counts] [output]
+        #net.getNodeByName('h1').popen("./client %s %d %d %d %s/%s" % (h0ip, args.qbport, args.qbsize, args.qbcount, args.dir, args.qbout), shell=True)
+        net.getNodeByName('h0').popen("./client %s %d %d %d %d >> %s/tcpecn%s" % (h1ip, args.qbport, args.qbsize, args.qbcount, args.qbinterval, args.dir, args.qbout), shell=True)
+
+    # Queue buildup reproduction - TCP
+    if (args.queuebuildup > 0):
+        ResetDCTCPState()
+        ResetECNState()
+        h1 = net.getNodeByName('h1')
+        h1ip = h1.IP()
+        # ./client [serIP] [serPort] [flowsize] [counts] [output]
+        #net.getNodeByName('h1').popen("./client %s %d %d %d %s/%s" % (h0ip, args.qbport, args.qbsize, args.qbcount, args.dir, args.qbout), shell=True)
+        net.getNodeByName('h0').popen("./client %s %d %d %d %d >> %s/tcp%s" % (h1ip, args.qbport, args.qbsize, args.qbcount, args.qbinterval, args.dir, args.qbout), shell=True)
 
     sleep_time = (args.qbcount / 10) + (args.qbcount * args.qbinterval)
     sleep(sleep_time)
@@ -511,3 +531,5 @@ def dctcp():
 
 if __name__ == "__main__":
     dctcp ()
+
+
