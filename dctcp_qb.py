@@ -26,13 +26,13 @@ import math
 CALIBRATION_SKIP = 20
 
 # Number of samples to grab for reference util calibration.
-CALIBRATION_SAMPLES = 10
+CALIBRATION_SAMPLES = 100
 
 # Number of samples to take in get_rates() before returning.
-NSAMPLES = 40
+NSAMPLES = 120
 
 # Time to wait between samples, in seconds, as a float.
-SAMPLE_PERIOD_SEC = 0.5
+SAMPLE_PERIOD_SEC = 0.1
 
 # Time to wait for first sample, in seconds, as a float.
 SAMPLE_WAIT_SEC = 3.0
@@ -46,54 +46,101 @@ def cprint(s, color, cr=True):
     else:
         print T.colored(s, color),
 
-# Get the number of bytes on that particular interface
-def get_txbytes(iface):
-    f = open('/proc/net/dev', 'r')
-    lines = f.readlines()
-    for line in lines:
-        if iface in line:
-            break
-    f.close()
-    if not line:
-        raise Exception("could not find iface %s in /proc/net/dev:%s" %
-                        (iface, lines))
-    # Extract TX bytes from:
-    #Inter-|   Receive                                                |  Transmit
-    # face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed
-    # lo: 6175728   53444    0    0    0     0          0         0  6175728   53444    0    0    0     0       0          0
-    return float(line.split()[1])
+# # Get the number of bytes on that particular interface
+# def get_txbytes(iface):
+#     f = open('/proc/net/dev', 'r')
+#     lines = f.readlines()
+#     for line in lines:
+#         if iface in line:
+#             break
+#     f.close()
+#     if not line:
+#         raise Exception("could not find iface %s in /proc/net/dev:%s" %
+#                         (iface, lines))
+#     # Extract TX bytes from:
+#     #Inter-|   Receive                                                |  Transmit
+#     # face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed
+#     # lo: 6175728   53444    0    0    0     0          0         0  6175728   53444    0    0    0     0       0          0
+#     return float(line.split()[9])
 
+# # Get the number of bytes on that particular interface
+# def get_rxbytes(iface):
+#     f = open('/proc/net/dev', 'r')
+#     lines = f.readlines()
+#     for line in lines:
+#         if iface in line:
+#             break
+#     f.close()
+#     if not line:
+#         raise Exception("could not find iface %s in /proc/net/dev:%s" %
+#                         (iface, lines))
+#     # Extract TX bytes from:
+#     #Inter-|   Receive                                                |  Transmit
+#     # face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed
+#     # lo: 6175728   53444    0    0    0     0          0         0  6175728   53444    0    0    0     0       0          0
+#     return float(line.split()[1])
 
-def get_rates(iface, nsamples=NSAMPLES, period=SAMPLE_PERIOD_SEC,
-              wait=SAMPLE_WAIT_SEC):
-    """Returns the interface @iface's current utilization in Mb/s.  It
-    returns @nsamples samples, and each sample is the average
-    utilization measured over @period time.  Before measuring it waits
-    for @wait seconds to 'warm up'."""
-    # Returning nsamples requires one extra to start the timer.
-    nsamples += 1
-    last_time = 0
-    last_txbytes = 0
-    ret = []
-    sleep(wait)
-    while nsamples:
-        nsamples -= 1
-        txbytes = get_txbytes(iface)
-        now = time()
-        elapsed = now - last_time
-        #if last_time:
-        #    print "elapsed: %0.4f" % (now - last_time)
-        last_time = now
-        # Get rate in Mbps; correct for elapsed time.
-        rate = (txbytes - last_txbytes) * 8.0 / 1e6 / elapsed
-        if last_txbytes != 0:
-            # Wait for 1 second sample
-            ret.append(rate)
-        last_txbytes = txbytes
-        print '.',
-        sys.stdout.flush()
-        sleep(period)
-    return ret
+# def get_txrates(iface, nsamples=NSAMPLES, period=SAMPLE_PERIOD_SEC,
+#               wait=SAMPLE_WAIT_SEC):
+#     """Returns the interface @iface's current utilization in Mb/s.  It
+#     returns @nsamples samples, and each sample is the average
+#     utilization measured over @period time.  Before measuring it waits
+#     for @wait seconds to 'warm up'."""
+#     # Returning nsamples requires one extra to start the timer.
+#     nsamples += 1
+#     last_time = 0
+#     last_txbytes = 0
+#     ret = []
+#     sleep(wait)
+#     while nsamples:
+#         nsamples -= 1
+#         txbytes = get_txbytes(iface)
+#         now = time()
+#         elapsed = now - last_time
+#         #if last_time:
+#         #    print "elapsed: %0.4f" % (now - last_time)
+#         last_time = now
+#         # Get rate in Mbps; correct for elapsed time.
+#         rate = (txbytes - last_txbytes) * 8.0 / 1e6 / elapsed
+#         if last_txbytes != 0:
+#             # Wait for 1 second sample
+#             ret.append(rate)
+#         last_txbytes = txbytes
+#         print '.',
+#         sys.stdout.flush()
+#         sleep(period)
+#     return ret
+
+# def get_rxrates(iface, nsamples=NSAMPLES, period=SAMPLE_PERIOD_SEC,
+#               wait=SAMPLE_WAIT_SEC):
+#     """Returns the interface @iface's current utilization in Mb/s.  It
+#     returns @nsamples samples, and each sample is the average
+#     utilization measured over @period time.  Before measuring it waits
+#     for @wait seconds to 'warm up'."""
+#     # Returning nsamples requires one extra to start the timer.
+#     nsamples += 1
+#     last_time = 0
+#     last_rxbytes = 0
+#     ret = []
+#     sleep(wait)
+#     while nsamples:
+#         nsamples -= 1
+#         rxbytes = get_rxbytes(iface)
+#         now = time()
+#         elapsed = now - last_time
+#         #if last_time:
+#         #    print "elapsed: %0.4f" % (now - last_time)
+#         last_time = now
+#         # Get rate in Mbps; correct for elapsed time.
+#         rate = (rxbytes - last_rxbytes) * 8.0 / 1e6 / elapsed
+#         if last_rxbytes != 0:
+#             # Wait for 1 second sample
+#             ret.append(rate)
+#         last_rxbytes = rxbytes
+#         print '.',
+#         sys.stdout.flush()
+#         sleep(period)
+#     return ret
 
 # Parsing arguments for the code
 parser = ArgumentParser(description="Bufferbloat tests")
@@ -130,16 +177,6 @@ parser.add_argument('--maxq',
                     type=int,
                     help="Max buffer size of network interface in packets",
                     default=100)
-
-parser.add_argument('--ping',
-            help="Number of ping packets",
-            type=int,
-            default="10")
-
-parser.add_argument('--interval',
-            help="ping intervals",
-            type=float,
-            default="1.0")
 
 # RED Parameters 
 parser.add_argument('--mark_threshold', '-k',
@@ -204,7 +241,7 @@ parser.add_argument('--qbport',
 parser.add_argument('--qbsize',
                     help="QB size",
                     type=int,
-                    default="50001")
+                    default="20")
 
 parser.add_argument('--qbcount', '-qbc', 
                     help="QB counts",
@@ -240,13 +277,13 @@ if not os.path.exists(args.dir):
 # Simple wrappers around monitoring utilities.  You are welcome to
 # contribute neatly written (using classes) monitoring scripts for
 # Mininet!
-def start_tcpprobe(outfile="cwnd.txt"):
-    os.system("rmmod tcp_probe; modprobe tcp_probe full=1;")
-    Popen("cat /proc/net/tcpprobe > %s/%s" % (args.dir, outfile),
-          shell=True)
+# def start_tcpprobe(outfile="cwnd.txt"):
+#     os.system("rmmod tcp_probe; modprobe tcp_probe full=1;")
+#     Popen("cat /proc/net/tcpprobe > %s/%s" % (args.dir, outfile),
+#           shell=True)
 
-def stop_tcpprobe():
-    Popen("killall -9 cat", shell=True).wait()
+# def stop_tcpprobe():
+#     Popen("killall -9 cat", shell=True).wait()
 
 # Enable DCTCP and ECN in the Linux Kernel
 def SetDCTCPState():
@@ -271,11 +308,11 @@ def ResetECNState():
    Popen("sysctl -w net.ipv4.tcp_ecn=0", shell=True).wait()
 
 # Monitor the queue occupancy 
-def start_qmon(iface, interval_sec=0.5, outfile="q.txt"):
-    monitor = Process(target=monitor_qlen,
-                      args=(iface, interval_sec, outfile))
-    monitor.start()
-    return monitor
+# def start_qmon(iface, interval_sec=0.1, outfile="q.txt"):
+#     monitor = Process(target=monitor_qlen,
+#                       args=(iface, interval_sec, outfile))
+#     monitor.start()
+#     return monitor
 
 # receiver = Client
 # Start the receiver of the flows, its fixed to be h0 here
@@ -291,18 +328,12 @@ def start_qmon(iface, interval_sec=0.5, outfile="q.txt"):
 # sender = Server
 # Start senders sending traffic to receiver h0
 def start_sender_receiver(net):
-    #h0 = net.getNodeByName('h0')
-    #for i in range(args.hosts-1):
-    #    print "Starting iperf client..."
-    #    hn = net.getNodeByName('h%d' %(i+1))
-    #    client = hn.popen("%s -c " % CUSTOM_IPERF_PATH + h0.IP() + " -t 1000")
-
     # client at h0
     h0 = net.getNodeByName('h0')
 
     # first server.
     h1 = net.getNodeByName('h1')
-    print "Starting iperf server at h1 (short flows)"
+    print "Starting server at h1 (short flows)"
     #server1 = h1.popen("%s -s -w 16m" % CUSTOM_IPERF_PATH)
     h1.popen("./server %d" % args.qbport)
 
@@ -314,24 +345,18 @@ def start_sender_receiver(net):
             server_node.popen("%s -s -w 16m" % CUSTOM_IPERF_PATH)
             # connect the client to this server
             print "Starting iperf client ..."
-            h0.popen("%s -c " % CUSTOM_IPERF_PATH + server_node.IP() + " -t 1000")
-
-    #h2 = net.getNodeByName('h2')
-    #client2 = h2.popen("%s -c " % CUSTOM_IPERF_PATH + h0.IP() + " -t 1000")
-    #print "Starting iperf client at h3"
-    #h3 = net.getNodeByName('h3')
-    #client3 = h3.popen("%s -c " % CUSTOM_IPERF_PATH + h0.IP() + " -t 1000")
+            h0.popen("%s -c " % CUSTOM_IPERF_PATH + server_node.IP() + " -t 1000 -S 2")
 
 # Function to compute the median
-def median(l):
-    "Compute median from an unsorted list of values"
-    s = sorted(l)
-    if len(s) % 2 == 1:
-        return s[(len(l) + 1) / 2 - 1]
-    else:
-        lower = s[len(l) / 2 - 1]
-        upper = s[len(l) / 2]
-        return float(lower + upper) / 2
+# def median(l):
+#     "Compute median from an unsorted list of values"
+#     s = sorted(l)
+#     if len(s) % 2 == 1:
+#         return s[(len(l) + 1) / 2 - 1]
+#     else:
+#         lower = s[len(l) / 2 - 1]
+#         upper = s[len(l) / 2]
+#         return float(lower + upper) / 2
 
 # Set the speed of an interface
 def set_speed(iface, spd):
@@ -398,20 +423,21 @@ def dctcp():
     sleep(5)
     set_speed(iface, "%.2fMbit" % args.bw_net)
     # Let the experiment stabilize initially
-    sleep(30)
+    sleep(5)
 
-    # Start monitoring the queue sizes.
-    qmon1 = start_qmon(iface='s0-eth1',
-                      outfile='%s/q1.txt' % (args.dir))
-    qmon2 = start_qmon(iface='s0-eth2',
-                      outfile='%s/q2.txt' % (args.dir))
-    qmon3 = start_qmon(iface='s0-eth3',
-                      outfile='%s/q3.txt' % (args.dir))
-    qmon4 = start_qmon(iface='s0-eth4',
-                      outfile='%s/q4.txt' % (args.dir))
+    # # Start monitoring the queue sizes.
+    # qmon1 = start_qmon(iface='s0-eth1',
+    #                   outfile='%s/q1.txt' % (args.dir))
+    # qmon2 = start_qmon(iface='s0-eth2',
+    #                   outfile='%s/q2.txt' % (args.dir))
+    # qmon3 = start_qmon(iface='s0-eth3',
+    #                   outfile='%s/q3.txt' % (args.dir))
+    # qmon4 = start_qmon(iface='s0-eth4',
+    #                   outfile='%s/q4.txt' % (args.dir))
 
     # Start all the monitoring processes
-    start_tcpprobe("cwnd.txt")
+    # start_tcpprobe("cwnd.txt")
+    
     # Run the experiment for the specified time
     start_time = time()
     while True:
@@ -423,110 +449,62 @@ def dctcp():
 
     # If the experiment involves marking bandwidth for different threshold
     # then get the rate of the bottlenect link
-    if(args.mark_threshold):
-        rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
-        #rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
-        rates = rates[CALIBRATION_SKIP:]
-        reference_rate = median(rates)
-        # if (reference_rate > 0):                          # Starry: Original is 20, but why?
-        if (True):
-            with open(args.dir+"/k1.txt", "a") as myfile:
-                myfile.write(str(args.mark_threshold)+",")
-                myfile.write(str(reference_rate))
-                myfile.write("\n")
-                myfile.close()
-        rates = get_rates(iface='s0-eth2', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
-        #rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
-        rates = rates[CALIBRATION_SKIP:]
-        reference_rate = median(rates)
-        # if (reference_rate > 0):                          # Starry: Original is 20, but why?
-        if (True):
-            with open(args.dir+"/k2.txt", "a") as myfile:
-                myfile.write(str(args.mark_threshold)+",")
-                myfile.write(str(reference_rate))
-                myfile.write("\n")
-                myfile.close()
-        rates = get_rates(iface='s0-eth3', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
-        #rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
-        rates = rates[CALIBRATION_SKIP:]
-        reference_rate = median(rates)
-        # if (reference_rate > 0):                          # Starry: Original is 20, but why?
-        if (True):
-            with open(args.dir+"/k3.txt", "a") as myfile:
-                myfile.write(str(args.mark_threshold)+",")
-                myfile.write(str(reference_rate))
-                myfile.write("\n")
-                myfile.close()
-        rates = get_rates(iface='s0-eth4', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
-        #rates = get_rates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
-        rates = rates[CALIBRATION_SKIP:]
-        reference_rate = median(rates)
-        # if (reference_rate > 0):                          # Starry: Original is 20, but why?
-        if (True):
-            with open(args.dir+"/k4.txt", "a") as myfile:
-                myfile.write(str(args.mark_threshold)+",")
-                myfile.write(str(reference_rate))
-                myfile.write("\n")
-                myfile.close()
+    # if(args.mark_threshold):
+    #     rates = get_rxrates(iface='s0-eth1', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
+    #     rates = rates[CALIBRATION_SKIP:]
+    #     reference_rate = median(rates)
+    #     if (True):
+    #         with open(args.dir+"/k1.txt", "a") as myfile:
+    #             myfile.write(str(args.mark_threshold)+",")
+    #             myfile.write(str(reference_rate))
+    #             myfile.write("\n")
+    #             myfile.close()
+    #     rates = get_txrates(iface='s0-eth2', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
+    #     rates = rates[CALIBRATION_SKIP:]
+    #     reference_rate = median(rates)
+    #     if (True):
+    #         with open(args.dir+"/k2.txt", "a") as myfile:
+    #             myfile.write(str(args.mark_threshold)+",")
+    #             myfile.write(str(reference_rate))
+    #             myfile.write("\n")
+    #             myfile.close()
+    #     rates = get_txrates(iface='s0-eth3', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
+    #     rates = rates[CALIBRATION_SKIP:]
+    #     reference_rate = median(rates)
+    #     if (True):
+    #         with open(args.dir+"/k3.txt", "a") as myfile:
+    #             myfile.write(str(args.mark_threshold)+",")
+    #             myfile.write(str(reference_rate))
+    #             myfile.write("\n")
+    #             myfile.close()
+    #     rates = get_txrates(iface='s0-eth4', nsamples=CALIBRATION_SAMPLES+CALIBRATION_SKIP)
+    #     rates = rates[CALIBRATION_SKIP:]
+    #     reference_rate = median(rates)
+    #     if (True):
+    #         with open(args.dir+"/k4.txt", "a") as myfile:
+    #             myfile.write(str(args.mark_threshold)+",")
+    #             myfile.write(str(reference_rate))
+    #             myfile.write("\n")
+    #             myfile.close()
 
-    # Wait for some while before the ping test.
+    # Wait for some while before the later part test.
     sleep(5)
-    # ping test
-    #net.getNodeByName('h0').popen("/bin/ping 10.0.0.2 -Q 2 -c %d -i %f >> %s/k%d-h1-ping.txt" % (args.ping, args.interval, args.dir, args.mark_threshold), shell=True)
-    #h0 = net.getNodeByName('h0')
-    #for i in xrange(args.hosts):
-    #    node_name = 'h%d' % (i)
-    #    node = net.getNodeByName(node_name)
-    #    nodeip = node.IP()
-    #    for j in xrange(4):
-    #        #net.getNodeByName(node_name).popen("/bin/ping 10.0.0.1 -Q %d -c %d -i %f >> %s/k%d-%s-tos%d-ping.txt" % (j, args.ping, args.interval, args.dir, args.mark_threshold, node_name, j), shell=True)            
-    #        net.getNodeByName('h0').popen("/bin/ping %s -Q %d -c %d -i %f >> %s/k%d-%s-tos%d-ping.txt" % (nodeip, j, args.ping, args.interval, args.dir, args.mark_threshold, node_name, j), shell=True)            
-    
-    #sleep_time = args.ping * args.interval
-    #sleep(sleep_time)
-    
-    # Queue buildup reproduction - DCTCP
+
+    # Queue buildup reproduction
     if (args.queuebuildup > 0):
         h1 = net.getNodeByName('h1')
         h1ip = h1.IP()
         # ./client [serIP] [serPort] [flowsize] [counts] [output]
-        #net.getNodeByName('h1').popen("./client %s %d %d %d %s/%s" % (h0ip, args.qbport, args.qbsize, args.qbcount, args.dir, args.qbout), shell=True)
-        net.getNodeByName('h0').popen("./client %s %d %d %d %d >> %s/dctcp%s" % (h1ip, args.qbport, args.qbsize, args.qbcount, args.qbinterval, args.dir, args.qbout), shell=True)
+        net.getNodeByName('h0').popen("./client %s %d %d %d %d >> %s/%s" % (h1ip, args.qbport, args.qbsize, args.qbcount, args.qbinterval, args.dir, args.qbout), shell=True)
 
-    sleep_time = (args.qbcount / 10) + (args.qbcount * args.qbinterval)
-    sleep(sleep_time)
-    
-    # Queue buildup reproduction - TCP/ECN
-    if (args.queuebuildup > 0):
-        ResetDCTCPState()
-        SetECNState2()
-        h1 = net.getNodeByName('h1')
-        h1ip = h1.IP()
-        # ./client [serIP] [serPort] [flowsize] [counts] [output]
-        #net.getNodeByName('h1').popen("./client %s %d %d %d %s/%s" % (h0ip, args.qbport, args.qbsize, args.qbcount, args.dir, args.qbout), shell=True)
-        net.getNodeByName('h0').popen("./client %s %d %d %d %d >> %s/tcpecn%s" % (h1ip, args.qbport, args.qbsize, args.qbcount, args.qbinterval, args.dir, args.qbout), shell=True)
-
-    sleep_time = (args.qbcount / 10) + (args.qbcount * args.qbinterval)
-    sleep(sleep_time)
-    
-    # Queue buildup reproduction - TCP
-    if (args.queuebuildup > 0):
-        ResetDCTCPState()
-        ResetECNState()
-        h1 = net.getNodeByName('h1')
-        h1ip = h1.IP()
-        # ./client [serIP] [serPort] [flowsize] [counts] [output]
-        #net.getNodeByName('h1').popen("./client %s %d %d %d %s/%s" % (h0ip, args.qbport, args.qbsize, args.qbcount, args.dir, args.qbout), shell=True)
-        net.getNodeByName('h0').popen("./client %s %d %d %d %d >> %s/tcp%s" % (h1ip, args.qbport, args.qbsize, args.qbcount, args.qbinterval, args.dir, args.qbout), shell=True)
-
-    sleep_time = (args.qbcount / 10) + (args.qbcount * args.qbinterval)
+    sleep_time = (args.qbcount * args.qbinterval) + (args.qbcount / 10)
     sleep(sleep_time)
 
-    stop_tcpprobe()
-    qmon1.terminate()
-    qmon2.terminate()
-    qmon3.terminate()
-    qmon4.terminate()
+    # stop_tcpprobe()
+    # qmon1.terminate()
+    # qmon2.terminate()
+    # qmon3.terminate()
+    # qmon4.terminate()
     net.stop()
     # Ensure that all processes you create within Mininet are killed.
     # Sometimes they require manual killing.
@@ -537,5 +515,3 @@ def dctcp():
 
 if __name__ == "__main__":
     dctcp ()
-
-

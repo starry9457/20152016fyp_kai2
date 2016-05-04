@@ -40,6 +40,18 @@ parser.add_argument('--every',
                     default=1,
                     type=int)
 
+parser.add_argument('--ylim',
+                    help="Maximum y axis value", 
+                    required=False,
+                    default=81,
+                    type=int)
+
+parser.add_argument('--xlim',
+                    help="Maximum x axis value", 
+                    required=False,
+                    default=60,
+                    type=int)
+
 args = parser.parse_args()
 
 if args.legend is None:
@@ -56,7 +68,7 @@ def get_style(i):
 
 m.rc('figure', figsize=(16, 6))
 fig = figure()
-ax = fig.add_subplot(111)
+ax = fig.add_subplot(121)
 for i, f in enumerate(args.files):
     data = read_list(f)
     xaxis = map(float, col(0, data))
@@ -69,7 +81,9 @@ for i, f in enumerate(args.files):
     ax.plot(xaxis, qlens, lw=2, **get_style(i))
     ax.xaxis.set_major_locator(MaxNLocator(4))
 
-plt.legend(args.legend)
+plt.legend(args.legend, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+plt.xlim([0, args.xlim])
+plt.ylim([0, args.ylim])
 plt.ylabel("Queue occupancy (packets)")
 plt.grid(True)
 plt.xlabel("Time elapsed (in sec)")

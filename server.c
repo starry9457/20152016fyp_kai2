@@ -126,10 +126,8 @@ void* server_thread_func(void* client_sockfd_ptr)
         }
 
         len = recv(sock, read_message, 64, 0);
-        // printf("Seq %d: Server: received message '%s' from client %d\n", i, read_message, sock);
         if (len <= 0)
         {
-            // printf("Seq %d: Server Connection closed with client %d (1)\n", i, sock);
             close(sock);
             return((void *)0);
         }
@@ -140,13 +138,9 @@ void* server_thread_func(void* client_sockfd_ptr)
         {
             len = (SEND_BUFSIZ < data_size) ? SEND_BUFSIZ : data_size;
 
-            // printf("Seq %d: Server: Sending message '%s' to client %d\n", i, write_message, sock);
             data_size -= send(sock, write_message, len, 0);
-            // printf("Seq %d: Server: write_message = '%s'\n", i, write_message);
-            // printf("Seq %d: Server: len = '%d'\n", i, len);
         }
     }
-    // printf("Server Connection closed with client %d (2)\n", sock);
     close(sock);
     return((void *)0);
 }

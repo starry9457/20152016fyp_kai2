@@ -11,31 +11,16 @@ echo "------------------------------------------------------------------------"
 mn -c
 
 echo "------------------------------------------------------------------------"
-echo "Running the DCTCP experiment"
+echo "Compile the server and client program for experiment 4"
 echo "------------------------------------------------------------------------"
-./kai2_expt_dctcp.sh
+./comile_server_client.sh
 
 echo "------------------------------------------------------------------------"
-echo "Running the TCP/ECN experiment"
+echo "For experiment 1-3:"
 echo "------------------------------------------------------------------------"
-./kai2_expt_tcpecn.sh
+./kai2_expt_1-3.sh
 
 echo "------------------------------------------------------------------------"
-echo "Running the DCTCP experiment for Queue Buildup"
+echo "For experiment 4:"
 echo "------------------------------------------------------------------------"
-./kai2_expt_dctcp_qb.sh
-
-echo "------------------------------------------------------------------------"
-echo "Running the TCP/ECN experiment for Queue Buildup"
-echo "------------------------------------------------------------------------"
-./kai2_expt_tcpecn_qb.sh
-
-echo "------------------------------------------------------------------------"
-echo "Running the post-experiment script"
-echo "------------------------------------------------------------------------"
-./post_processing.sh
-
-echo "------------------------------------------------------------------------"
-echo "Running the post-experiment script for Queue Buildup"
-echo "------------------------------------------------------------------------"
-./post_processing_qb.sh
+./kai2_expt_qb.sh

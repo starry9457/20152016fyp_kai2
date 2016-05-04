@@ -1,31 +1,25 @@
-# Data center network transport protocol design
+# A Comprehensive Study of ECN­based Transport
 
 Extracted from https://bitbucket.org/prachetaa/cs244_dctcp_win13 by Prachetaa Raghavan
 
-Extra files to download:
+It is recommended to reproduce the experiment on an Amazon EC2 instance - CS244_DCTCP_WIN13 in US West (Oregon)
+Amazon EC2: [https://aws.amazon.com/ec2/](https://aws.amazon.com/ec2/)
 
-kai2.pem: http://starryho.duckdns.org/kai2.pem
+To reproduce the experiemnt, clone the github codes to your instance by
+git clone https://github.com/starry9457/20152016fyp_kai2
 
-Server connection:
-
-ssh -i "kai2.pem" ubuntu@ec2-54-191-67-33.us-west-2.compute.amazonaws.com
-
-Please carefully locate the "kai2.pem" file.
-
-** For SSH connection, using PuTTY is recommended.
-
-** For SSH File Transfer, using WinSCP is recommended.
+After getting a copy of the codes, run
+sudo ./kai2_expt.sh
+And the the result will be generated. (May need to wait for about 30 minutes)
 
 Team Members:
 
 HO Kam Ming, Starry (kmhoab@ust.hk)
-
-YEUNG Yuk Hang
-
-LAM Man Yan
+YEUNG Yuk Hang (yhyeungaa@ust.hk)
+LAM Man Yan, Emma (mylamac@ust.hk)
 
 Advised by
-
-Prof. Kai CHEN
+Prof. Kai CHEN (kaichen@cse.ust.hk)
+Wei BAI (PhD student of Prof. CHEN) (wbaiab@cse.ust.hk)
 
 HKUST 2015-2016 COMP4981/4988 Final Year Project KAI2 Team.
