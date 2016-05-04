@@ -13,7 +13,7 @@ mn -c
 echo "------------------------------------------------------------------------"
 echo "Compile the server and client program for experiment 4"
 echo "------------------------------------------------------------------------"
-./comile_server_client.sh
+./compile_server_client.sh
 
 echo "------------------------------------------------------------------------"
 echo "For experiment 1-3:"

@@ -35,9 +35,9 @@ echo "------------------------------------------------------------------------"
 echo ""
 
 for qsize in $qsizes; do
-    mkdir qb-dctcpgraphs-q$qsize
-    dctcpdirf=qb-dctcpgraphs-q$qsize
-    rm -rf qb-dctcpbb-q$qsize
+    # mkdir qb-dctcpgraphs-q$qsize
+    # dctcpdirf=qb-dctcpgraphs-q$qsize
+    # rm -rf qb-dctcpbb-q$qsize
     for k in $ks; do
         mkdir qb-dctcpbb-q$qsize-k$k
         dctcpdir1=qb-dctcpbb-q$qsize-k$k
@@ -48,7 +48,7 @@ for qsize in $qsizes; do
         echo "------------------------------------------------------------------------"
         dctcp_red_min=`expr $k \\* $red_avpkt`
         dctcp_red_max=`expr $dctcp_red_min + 1`
-        python dctcp_qb.sh --delay $delay -b $bwnet -B $bwnet -k $k -d $dctcpdir1 --maxq $qsize -t $time \
+        python dctcp_qb.py --delay $delay -b $bwnet -B $bwnet -k $k -d $dctcpdir1 --maxq $qsize -t $time \
         --red_limit $red_limit \
         --red_min $dctcp_red_min \
         --red_max $dctcp_red_max \
@@ -74,9 +74,9 @@ echo "Queue Buildup Experiment - TCP/ECN"
 echo "------------------------------------------------------------------------"
 echo ""
 for qsize in $qsizes; do
-    mkdir qb-tcpecngraphs-q$qsize
-    tcpecndirf=qb-tcpecngraphs-q$qsize
-    rm -rf qb-tcpecnbb-q$qsize
+    # mkdir qb-tcpecngraphs-q$qsize
+    # tcpecndirf=qb-tcpecngraphs-q$qsize
+    # rm -rf qb-tcpecnbb-q$qsize
     for k in $ks; do
         mkdir qb-tcpecnbb-q$qsize-k$k
         tcpecndir1=qb-tcpecnbb-q$qsize-k$k
@@ -87,7 +87,7 @@ for qsize in $qsizes; do
         echo "------------------------------------------------------------------------"
         tcpecn_red_min=`expr $k \\* $red_avpkt`
         tcpecn_red_max=`expr $tcpecn_red_min + 1`
-        python dctcp_qb.sh --delay $delay -b $bwnet -B $bwnet -k $k -d $tcpecndir1 --maxq $qsize -t $time \
+        python dctcp_qb.py --delay $delay -b $bwnet -B $bwnet -k $k -d $tcpecndir1 --maxq $qsize -t $time \
         --red_limit $red_limit \
         --red_min $tcpecn_red_min \
         --red_max $tcpecn_red_max \
@@ -113,9 +113,9 @@ echo "Queue Buildup Experiment - TCP"
 echo "------------------------------------------------------------------------"
 echo ""
 for qsize in $qsizes; do
-    mkdir qb-tcpgraphs-q$qsize
-    tcpdirf=qb-tcpgraphs-q$qsize
-    rm -rf qb-tcpbb-q$qsize
+    # mkdir qb-tcpgraphs-q$qsize
+    # tcpdirf=qb-tcpgraphs-q$qsize
+    # rm -rf qb-tcpbb-q$qsize
     for k in $ks; do
         mkdir qb-tcpbb-q$qsize-k$k
         tcpdir1=qb-tcpbb-q$qsize-k$k
@@ -126,7 +126,7 @@ for qsize in $qsizes; do
         echo "------------------------------------------------------------------------"
         tcp_red_min=`expr $k \\* $red_avpkt`
         tcp_red_max=`expr $tcp_red_min + 1`
-        python dctcp_qb.sh --delay $delay -b $bwnet -B $bwnet -k $k -d $tcpdir1 --maxq $qsize -t $time \
+        python dctcp_qb.py --delay $delay -b $bwnet -B $bwnet -k $k -d $tcpdir1 --maxq $qsize -t $time \
         --dctcp 0 \
         --red 0 \
         --ecn 0 \
@@ -138,4 +138,22 @@ for qsize in $qsizes; do
         -qb 1 \
         --iperf $iperf -n $n
     done
+done
+
+graphf=qb-graphs-q$qsize
+mkdir qb-graphs-q$qsize
+
+echo ""
+echo "------------------------------------------------------------------------"
+echo "Queue Buildup Experiment - Generate graph"
+echo "------------------------------------------------------------------------"
+echo ""
+for k in $ks; do
+    dctcpf=qb-dctcpbb-q$qsize-k$k
+    tcpecnf=qb-tcpecnbb-q$qsize-k$k
+    tcpf=qb-tcpbb-q$qsize-k$k
+    dctcpqbout=dctcp-qb-k$k-qbs$qbsize-c$qbc.txt
+    tcpecnqbout=tcpecn-qb-k$k-qbs$qbsize-c$qbc.txt
+    tcpqbout=tcp-qb-k$k-qbs$qbsize-c$qbc.txt
+    python plot_qb.py -f $dctcpf/$dctcpqbout $tcpecnf/$tcpecnqbout $tcpf/$tcpqbout --count qbc --size qbsize -l DCTCP 'TCP/ECN' 'TCP' -o $graphf/qb-comparison-k$k-qbs$qbsize-c$qbc.png
 done

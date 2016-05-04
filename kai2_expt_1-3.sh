@@ -35,7 +35,7 @@ echo ""
 for qsize in $qsizes; do
     mkdir dctcpgraphs-q$qsize
     dctcpdirf=dctcpgraphs-q$qsize
-    rm -rf dctcpbb-q$qsize
+    # rm -rf dctcpbb-q$qsize
     for k in $ks; do
         mkdir dctcpbb-q$qsize-k$k
         dctcpdir1=dctcpbb-q$qsize-k$k
@@ -85,7 +85,7 @@ echo ""
 for qsize in $qsizes; do
     mkdir tcpecngraphs-q$qsize
     tcpecndirf=tcpecngraphs-q$qsize
-    rm -rf tcpecnbb-q$qsize
+    # rm -rf tcpecnbb-q$qsize
     for k in $ks; do
         mkdir tcpecnbb-q$qsize-k$k
         tcpecndir1=tcpecnbb-q$qsize-k$k

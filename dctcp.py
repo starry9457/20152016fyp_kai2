@@ -346,7 +346,7 @@ def dctcp():
                       outfile='%s/q.txt' % (args.dir))
 
     # Start all the monitoring processes
-    start_tcpprobe("cwnd.txt")
+    # start_tcpprobe("cwnd.txt")
     # Run the experiment for the specified time
     start_time = time()
     while True:
@@ -380,7 +380,7 @@ def dctcp():
     sleep_time = args.ping * args.interval
     sleep(sleep_time)
 	
-    stop_tcpprobe()
+    # stop_tcpprobe()
     qmon.terminate()
     net.stop()
     # Ensure that all processes you create within Mininet are killed.

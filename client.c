@@ -138,8 +138,8 @@ int main(int argc, char **argv)
     gettimeofday(&endconn, NULL);
     unsigned long timeused = (endconn.tv_sec - startconn.tv_sec) * 1000000 + endconn.tv_usec - startconn.tv_usec;
     unsigned long avgtime = totaltime / seq_count;
-    printf("Total data transfered: %lu bytes. Total time: %lu us (average time: %lu us).\n", totalbyte, totaltime, avgtime);
-    printf("Total time(from start connection to end all connection): %lu us.\n", timeused);
+    // printf("Total data transfered: %lu bytes. Total time: %lu us (average time: %lu us).\n", totalbyte, totaltime, avgtime);
+    // printf("Total time(from start connection to end all connection): %lu us.\n", timeused);
 
     return 0;
 }
