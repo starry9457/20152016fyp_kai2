@@ -155,8 +155,8 @@ python plot_k_sweep.py -f $dctcpf/k.txt $tcpecnf/k.txt -l DCTCP 'TCP/ECN' -o $gr
 echo ""
 echo "------------------------------------------------------------------------"
 echo "Experiment 3"
-echo "Processing data to get average ping in different tests, result will be"
-echo "put inside $dctcpf , $tcpecnf"
+echo "Generating graph of RTT comparison under different Marking Thresholds"
 echo "------------------------------------------------------------------------"
 ./dctcp_pingavg.sh | tee $dctcpf/ping-avg.txt
 ./tcpecn_pingavg.sh | tee $tcpecnf/ping-avg.txt
+python plot_ping.py -f $dctcf/ping-avg.txt $tcpecnf/ping-avg.txt -l DCTCP 'TCP/ECN' --tos 2 -o $graphf/ping_comparison.png

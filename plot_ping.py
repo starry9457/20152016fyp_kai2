@@ -2,7 +2,9 @@
 Plot ping vs marking threshold
 '''
 from helper import *
+from collections import defaultdict
 import plot_defaults
+import copy
 
 from matplotlib.ticker import MaxNLocator
 from pylab import figure
@@ -40,16 +42,10 @@ parser.add_argument('--every',
                     default=1,
                     type=int)
 
-parser.add_argument('--ylim',
-                    help="Maximum y axis value", 
+parser.add_argument('--tos',
+                    help="Type of Service (Tos)", 
                     required=False,
-                    default=81,
-                    type=int)
-
-parser.add_argument('--xlim',
-                    help="Maximum x axis value", 
-                    required=False,
-                    default=60,
+                    default=0,
                     type=int)
 
 args = parser.parse_args()
@@ -66,27 +62,43 @@ def get_style(i):
     else:
         return {'color': 'blue', 'ls': '-.'}
 
+def parse_file(file, tos):
+    ks = []
+    rtts = []
+    found = False
+    for l in open(file).xreadlines():
+        l = l.strip()
+        if (l == "TOS: %d" % tos):
+            found = True
+            continue
+        else:
+            if (found):
+                fields = l.split(',')
+                if fields[0].find("TOS") == -1:
+                    ks.append(int(fields[0]))
+                    rtts.append(float(fields[1]))
+                else:
+                    found = False
+                    break
+            else:
+                continue
+    return ks, rtts
+
 m.rc('figure', figsize=(16, 6))
 fig = figure()
 ax = fig.add_subplot(121)
 for i, f in enumerate(args.files):
-    data = read_list(f)
-    xaxis = map(float, col(0, data))
-    start_time = xaxis[0]
-    xaxis = map(lambda x: x - start_time, xaxis)
-    qlens = map(float, col(1, data))
-
-    xaxis = xaxis[::args.every]
-    qlens = qlens[::args.every]
-    ax.plot(xaxis, qlens, lw=2, **get_style(i))
-    ax.xaxis.set_major_locator(MaxNLocator(4))
+    ks, rtts = parse_file(f, args.tos)
+    xks = ks[::args.every]
+    yrtts = rtts[::args.every]
+    ax.plot(xks, yrtts, lw=2, **get_style(i))
+    ax.xaxis.set_major_locator(MaxNLocator(8))
 
 plt.legend(args.legend, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-plt.xlim([0, args.xlim])
-plt.ylim([0, args.ylim])
-plt.ylabel("Queue occupancy (packets)")
+plt.ylabel("RTT (ms)")
 plt.grid(True)
-plt.xlabel("Time elapsed (in sec)")
+plt.xlabel("Marking Thresholds (k)")
+plt.title("Round-trip Time under different Marking Thresholds, ToS = %d" % (args.tos) )
 
 if args.out:
     print 'saving to', args.out

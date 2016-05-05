@@ -50,9 +50,9 @@ if args.legend is None:
 to_plot=[]
 def get_style(i):
     if i == 0:
-        return {'color': 'blue'}
+        return {'color': 'red'}
     elif i == 1:
-	return {'color': 'red', 'ls': '-.'}
+	return {'color': 'blue', 'ls': '-.'}
     elif i == 2:
         return {'color': 'green'}
     elif i == 3:
