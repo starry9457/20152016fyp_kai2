@@ -159,4 +159,4 @@ echo "Generating graph of RTT comparison under different Marking Thresholds"
 echo "------------------------------------------------------------------------"
 ./dctcp_pingavg.sh | tee $dctcpf/ping-avg.txt
 ./tcpecn_pingavg.sh | tee $tcpecnf/ping-avg.txt
-python plot_ping.py -f $dctcf/ping-avg.txt $tcpecnf/ping-avg.txt -l DCTCP 'TCP/ECN' --tos 2 -o $graphf/ping_comparison.png
+python plot_ping.py -f $dctcpf/ping-avg.txt $tcpecnf/ping-avg.txt -l DCTCP 'TCP/ECN' --tos 2 -o $graphf/ping_comparison.png
