@@ -5,9 +5,10 @@ qsize=200
 ks="8 12 15 20 30 40 60 100"
 n=3
 iperf_port=5001
+tos="0 2"
 
 # For-loop
-for i in "0 2"; do
+for i in $tos; do
 	echo "TOS: $i"
     for k in $ks; do
     	dir1=dctcpbb-q$qsize-k$k
