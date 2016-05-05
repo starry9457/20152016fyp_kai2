@@ -7,19 +7,15 @@ n=3
 iperf_port=5001
 
 # For-loop
-for ((i=0; i<$n; i++)); do
-    echo "Host: $i"
-    for ((j=0; j<4; j++)); do
-    	echo "TOS: $j"
-        for k in $ks; do
-        	dir1=dctcpbb-q$qsize-k$k
-            dctcp_src=$dir1/k$k-h$i-tos$j-ping.txt
-            echo $k, |tr "\n" " " 
-            pingavg=`awk -F '/' 'END {print $5}' "$dctcp_src"`
-            echo $pingavg, |tr "\n" " " 
-            percentloss=`grep -oP '\d+(?=% packet loss)'  "$dctcp_src"`
-            echo $percentloss
-        done
+for i in "0 2"; do
+	echo "TOS: $i"
+    for k in $ks; do
+    	dir1=dctcpbb-q$qsize-k$k
+        dctcp_src=$dir1/k$k-h1-tos$i-ping.txt
+        echo $k, |tr "\n" " " 
+        pingavg=`awk -F '/' 'END {print $5}' "$dctcp_src"`
+        echo $pingavg, |tr "\n" " " 
+        percentloss=`grep -oP '\d+(?=% packet loss)'  "$dctcp_src"`
+        echo $percentloss
     done
-    echo ""
 done

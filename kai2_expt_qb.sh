@@ -155,5 +155,5 @@ for k in $ks; do
     dctcpqbout=dctcp-qb-k$k-qbs$qbsize-c$qbc.txt
     tcpecnqbout=tcpecn-qb-k$k-qbs$qbsize-c$qbc.txt
     tcpqbout=tcp-qb-k$k-qbs$qbsize-c$qbc.txt
-    python plot_qb.py -f $dctcpf/$dctcpqbout $tcpecnf/$tcpecnqbout $tcpf/$tcpqbout --count qbc --size qbsize -l DCTCP 'TCP/ECN' 'TCP' -o $graphf/qb-comparison-k$k-qbs$qbsize-c$qbc.png
+    python plot_qb.py -f $dctcpf/$dctcpqbout $tcpecnf/$tcpecnqbout $tcpf/$tcpqbout --count qbc --size qbsize -l DCTCP 'TCP/ECN' TCP -o $graphf/qb-comparison-k$k-qbs$qbsize-c$qbc.png
 done

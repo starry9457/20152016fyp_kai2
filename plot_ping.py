@@ -1,9 +1,8 @@
 '''
-Plot the CDF of request completion times for short flows transfer
+Plot ping vs marking threshold
 '''
 from helper import *
 import plot_defaults
-import numpy as np
 
 from matplotlib.ticker import MaxNLocator
 from pylab import figure
@@ -41,14 +40,16 @@ parser.add_argument('--every',
                     default=1,
                     type=int)
 
-parser.add_argument('--count',
-                    help="Counts of data of transfer",
-                    default=1000,
+parser.add_argument('--ylim',
+                    help="Maximum y axis value", 
+                    required=False,
+                    default=81,
                     type=int)
 
-parser.add_argument('--size',
-                    help="Data size of each transfer",
-                    default=20,
+parser.add_argument('--xlim',
+                    help="Maximum x axis value", 
+                    required=False,
+                    default=60,
                     type=int)
 
 args = parser.parse_args()
@@ -59,42 +60,33 @@ if args.legend is None:
         args.legend.append(file)
 
 to_plot=[]
-
 def get_style(i):
     if i == 0:
-        return {'color': 'blue'}
-    elif i == 1:
-    return {'color': 'red', 'ls': '-.'}
-    elif i == 2:
-        return {'color': 'green'}
-    elif i == 3:
-        return {'color': 'black'}
+        return {'color': 'red'}
     else:
-        return {'color': 'orange'}
-
+        return {'color': 'blue', 'ls': '-.'}
 
 m.rc('figure', figsize=(16, 6))
 fig = figure()
-ax = fig.add_subplot(111)
+ax = fig.add_subplot(121)
 for i, f in enumerate(args.files):
     data = read_list(f)
-    xaxis = map(int, col(1, data))
-    xaxis = map(lambda x: x , xaxis)
-    
-    xaxis = xaxis[::args.every]
-    sorted_xaxis = np.sort(xaxis)
-    
-    cxaxis = np.cumsum(sorted_xaxis * .0001)
-    cyaxis = np.arange(0, 1, (1.0 / args.count) )
-    ax.plot(cxaxis, cyaxis, lw=2, **get_style(i))
-    ax.xaxis.set_major_locator(MaxNLocator(8))
+    xaxis = map(float, col(0, data))
+    start_time = xaxis[0]
+    xaxis = map(lambda x: x - start_time, xaxis)
+    qlens = map(float, col(1, data))
 
-plt.legend(args.legend, 'lower right')
-#plt.ylim([0,101])
-plt.ylabel("CDF")
+    xaxis = xaxis[::args.every]
+    qlens = qlens[::args.every]
+    ax.plot(xaxis, qlens, lw=2, **get_style(i))
+    ax.xaxis.set_major_locator(MaxNLocator(4))
+
+plt.legend(args.legend, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+plt.xlim([0, args.xlim])
+plt.ylim([0, args.ylim])
+plt.ylabel("Queue occupancy (packets)")
 plt.grid(True)
-plt.xlabel("Completion time of short transfer (ms)")
-plt.title("CDF of request completion times for %d %d KB transfers" % (args.count, args.size) )
+plt.xlabel("Time elapsed (in sec)")
 
 if args.out:
     print 'saving to', args.out
